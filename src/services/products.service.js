@@ -63,7 +63,11 @@ export const getProductById = async (id) => {
 export const addProduct = async (product) => {
   try {
     const newProduct = await productDAO.create(product);
-    return newProduct;
+    return {
+      error: false,
+      msg: "Producto creado satisfactoriamente",
+      product: newProduct,
+    };
   } catch (e) {
     return {
       error: true,

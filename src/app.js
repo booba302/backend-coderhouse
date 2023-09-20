@@ -8,6 +8,7 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
 
+import cartRouter from "./routers/cart.router.js";
 import productRouter from "./routers/product.router.js";
 import __dirname from "./config/dirname.js";
 
@@ -47,6 +48,7 @@ app.use(passport.session());
 
 app.use(express.static(`${__dirname}/../public`));
 
+app.use("/api/carts", cartRouter);
 app.use("/api/products", productRouter);
 
 httpServer.listen(8080, () => {
