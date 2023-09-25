@@ -1,0 +1,48 @@
+<div>
+  <div style="margin-bottom: 50px;">
+    <h1>Bienvenido</h1>
+    <h3>Nombre: {{name}} {{lastname}}</h3>
+    <h3>Correo: {{email}}</h3>
+    <h3>Rol: {{role}}</h3>
+  </div>
+  <h1>Lista de productos </h1>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <td scope="col">ID</td>
+        <td scope="col">Nombre</td>
+        <td scope="col">Descripción</td>
+        <td scope="col">Precio</td>
+        <td scope="col">Imagen</td>
+        <td scope="col">Código</td>
+        <td scope="col">Stock</td>
+        <td scope="col">Categoría</td>
+        <td scope="col">Acción</td>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each products.products}}
+        <tr>
+          <td scope="col"> {{this._id}} </td>
+          <td scope="col"> {{this.title}} </td>
+          <td scope="col"> {{this.description}} </td>
+          <td scope="col"> {{this.price}} </td>
+          <td scope="col"><img src={{this.thumbnail}} /></td>
+          <td scope="col"> {{this.code}} </td>
+          <td scope="col"> {{this.stock}} </td>
+          <td scope="col"> {{this.category}} </td>
+          <td scope="col"> <button>Agregar al carrito</button> </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+<div>
+  <form action="/api/users/logout" method="GET">
+    <input
+      class="btn btn-primary btn-block mb-4"
+      type="submit"
+      value="Cerrar Sesión"
+    />
+  </form>
+</div>

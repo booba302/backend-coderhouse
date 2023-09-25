@@ -8,11 +8,17 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
 
+import authRouter from "./routers/auth.router.js";
 import cartRouter from "./routers/cart.router.js";
 import productRouter from "./routers/product.router.js";
+import userRouter from "./routers/user.router.js";
+import viewRouter from "./routers/views.router.js";
+
 import __dirname from "./config/dirname.js";
+import InitPassport from "./config/passport.config.js";
 
 const app = express();
+InitPassport();
 
 const conn = await mongoose.connect(
   "mongodb+srv://booba302:CEtg68FE9czaHCp@codercluster.ex9gekc.mongodb.net/ecommerce"
@@ -48,8 +54,11 @@ app.use(passport.session());
 
 app.use(express.static(`${__dirname}/../public`));
 
+app.use("/", viewRouter);
+app.use("/api/auth", authRouter);
 app.use("/api/carts", cartRouter);
 app.use("/api/products", productRouter);
+app.use("/api/users", userRouter);
 
 httpServer.listen(8080, () => {
   console.log("Escuchando puerto: 8080");
