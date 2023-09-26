@@ -8,12 +8,14 @@ export const getCarts = async () => {
   try {
     const carts = await cartDAO.find();
     return {
+      code: 200,
       error: false,
       msg: "Carritos encontrados",
       cart: carts,
     };
   } catch (e) {
     return {
+      code: 400,
       error: true,
       msg: "Carritos no encontrados",
       info: e,
@@ -24,20 +26,15 @@ export const getCarts = async () => {
 export const getCartsById = async (id) => {
   try {
     const cart = await cartDAO.findById(id);
-    if (!cart) {
-      return {
-        error: true,
-        msg: `Carrito con id ${id} no encontrado`,
-      };
-    } else {
-      return {
-        error: false,
-        msg: `Carrito con id ${id} encontrado`,
-        cart: cart,
-      };
-    }
+    return {
+      code: 200,
+      error: false,
+      msg: "Carritos encontrados",
+      cart: cart,
+    };
   } catch (e) {
     return {
+      code: 400,
       error: true,
       msg: "Ocurrió un error al hacer la búsqueda",
       info: e,
@@ -49,12 +46,14 @@ export const addCart = async () => {
   try {
     const newCart = await cartDAO.create();
     return {
+      code: 201,
       error: false,
       msg: "Carrito creado satisfactoriamente",
       cart: newCart,
     };
   } catch (e) {
     return {
+      code: 400,
       error: true,
       msg: "Ocurrió un error al agregar el carrito",
       info: e,
@@ -91,12 +90,14 @@ export const addProductToCart = async (idCart, idProd) => {
     }
     findCart = await cartDAO.findById(idCart);
     return {
+      code: 201,
       error: false,
       msg: `Se agrego ${idProd} al carrito ${idCart}`,
       cart: findCart,
     };
   } catch (e) {
     return {
+      code: 400,
       error: true,
       msg: "Ocurrió un error al agregar un producto al carrito",
       info: e,
@@ -116,6 +117,7 @@ export const updateCart = async (id, product) => {
       await cartDAO.update(id, product);
       findCart = await cartDAO.findById(id);
       return {
+        code: 201,
         error: false,
         msg: `Carrito actualizado`,
         product: findCart,
@@ -123,6 +125,7 @@ export const updateCart = async (id, product) => {
     }
   } catch (e) {
     return {
+      code: 400,
       error: true,
       msg: "Ocurrió un error al actualizar el carrito",
       info: e,
@@ -140,18 +143,21 @@ export const updateQtyInCart = async (idCart, idProd, quantity) => {
       findCart.products[prdtIndex].quantity = quantity;
       await findCart.save();
       return {
+        code: 201,
         error: false,
         msg: `Se actualizó la cantidad del producto ${idProd} del carrito ${idCart}`,
         cart: findCart,
       };
     } else {
       return {
+        code: 200,
         error: true,
         msg: `Producto no encontrado en el carrito`,
       };
     }
   } catch (e) {
     return {
+      code: 400,
       error: true,
       msg: "Ocurrió un error al actualizar el carrito",
       info: e,
@@ -163,12 +169,14 @@ export const delCart = async (id) => {
   try {
     const cart = await cartDAO.delete(id);
     return {
+      code: 200,
       error: false,
       msg: "Carrito eliminado",
       product: cart,
     };
   } catch (e) {
     return {
+      code: 400,
       error: true,
       msg: "Ocurrió un error al eliminar el carrito",
       info: e,
@@ -193,12 +201,14 @@ export const delProductInCart = async (idCart, idProd) => {
     }
     await findCart.save();
     return {
+      code: 200,
       error: false,
       msg: `Se eliminó ${idProd} del carrito ${idCart}`,
       cart: findCart,
     };
   } catch (e) {
     return {
+      code: 400,
       error: true,
       msg: "Ocurrió un error al eliminar el producto del carrito",
       info: e,
@@ -212,12 +222,14 @@ export const emptyCart = async (id) => {
     findCart.products = [];
     await findCart.save();
     return {
+      code: 200,
       error: false,
       msg: `Se limpió el carrito ${id}`,
       cart: findCart,
     };
   } catch (e) {
     return {
+      code: 400,
       error: true,
       msg: "Ocurrió un error al limpiar el carrito",
       info: e,

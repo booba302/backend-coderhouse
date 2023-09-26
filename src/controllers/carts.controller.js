@@ -2,13 +2,13 @@ import * as CartService from "../services/carts.service.js";
 
 export const GETCarts = async (req, res) => {
   const carts = await CartService.getCarts();
-  res.send(carts);
+  res.status(200).send(carts);
 };
 
 export const GETCartById = async (req, res) => {
   const { id } = req.params;
   const cart = await CartService.getCartsById(id);
-  res.send(cart);
+  res.status(cart.code).send(cart);
 };
 
 export const POSTCart = async (req, res) => {
