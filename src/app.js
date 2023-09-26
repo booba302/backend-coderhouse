@@ -16,13 +16,12 @@ import viewRouter from "./routers/views.router.js";
 
 import __dirname from "./config/dirname.js";
 import InitPassport from "./config/passport.config.js";
+import config from "./config/config.js";
 
 const app = express();
 InitPassport();
 
-const conn = await mongoose.connect(
-  "mongodb+srv://booba302:CEtg68FE9czaHCp@codercluster.ex9gekc.mongodb.net/ecommerce"
-);
+const conn = await mongoose.connect(config.mongoUrl);
 
 const httpServer = HTTPServer(app);
 const io = new SocketIO(httpServer);
@@ -41,8 +40,7 @@ app.use(
     resave: true,
     saveUninitialized: true,
     store: new MongoStore({
-      mongoUrl:
-        "mongodb+srv://booba302:CEtg68FE9czaHCp@codercluster.ex9gekc.mongodb.net/ecommerce",
+      mongoUrl: config.mongoUrl,
       ttl: 3600,
     }),
     ttl: 3600,
