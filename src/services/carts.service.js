@@ -108,21 +108,14 @@ export const addProductToCart = async (idCart, idProd) => {
 export const updateCart = async (id, product) => {
   try {
     let findCart = await cartDAO.findById(id);
-    if (!findCart) {
-      return {
-        error: true,
-        msg: `Carrito con id ${id} no encontrado`,
-      };
-    } else {
-      await cartDAO.update(id, product);
-      findCart = await cartDAO.findById(id);
-      return {
-        code: 201,
-        error: false,
-        msg: `Carrito actualizado`,
-        product: findCart,
-      };
-    }
+    await cartDAO.update(id, product);
+    findCart = await cartDAO.findById(id);
+    return {
+      code: 201,
+      error: false,
+      msg: `Carrito actualizado`,
+      product: findCart,
+    };
   } catch (e) {
     return {
       code: 400,
