@@ -36,7 +36,7 @@ app.use(cookieParser());
 
 app.use(
   session({
-    secret: "topsecret2023",
+    secret: config.mongoSecret,
     resave: true,
     saveUninitialized: true,
     store: new MongoStore({
@@ -58,6 +58,6 @@ app.use("/api/carts", cartRouter);
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 
-httpServer.listen(8080, () => {
-  console.log("Escuchando puerto: 8080");
+httpServer.listen(config.port, () => {
+  console.log(`Escuchando puerto: ${config.port}`);
 });
