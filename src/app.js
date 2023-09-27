@@ -18,6 +18,10 @@ import __dirname from "./config/dirname.js";
 import InitPassport from "./config/passport.config.js";
 import config from "./config/config.js";
 
+import * as ProductService from "./services/products.service.js";
+import * as MessageService from "./services/message.service.js";
+import { socketConnection } from "./controllers/socket.controller.js";
+
 const app = express();
 InitPassport();
 
@@ -25,6 +29,11 @@ const conn = await mongoose.connect(config.mongoUrl);
 
 const httpServer = HTTPServer(app);
 const io = new SocketIO(httpServer);
+
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
 
 app.engine("handlebars", handlebars.engine());
 app.set("views", `${__dirname}/../views`);
@@ -57,6 +66,10 @@ app.use("/api/auth", authRouter);
 app.use("/api/carts", cartRouter);
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
+
+io.on("connection", async (socket) => {
+  socketConnection(socket);
+});
 
 httpServer.listen(config.port, () => {
   console.log(`Escuchando puerto: ${config.port}`);

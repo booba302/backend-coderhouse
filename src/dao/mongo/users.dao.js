@@ -11,6 +11,10 @@ export default class UserDAO {
     return await UserModel.find({ _id: id }).populate("carts.cart").lean();
   }
 
+  async findByEmail(email){
+    return await UserModel.findOne({ email });
+  }
+
   async create(user) {
     return await UserModel.insertMany(user);
   }

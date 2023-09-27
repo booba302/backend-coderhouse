@@ -1,6 +1,11 @@
 import { Router } from "express";
 import * as ViewController from "../controllers/views.controller.js";
-import { notLogged, logged } from "../utils/secure.middleware.js";
+import {
+  notLogged,
+  logged,
+  isAdmin,
+  isUser,
+} from "../utils/secure.middleware.js";
 
 const viewRouter = Router();
 
@@ -9,6 +14,17 @@ viewRouter
   .get("/login", logged, ViewController.GETLogin)
   .get("/products", notLogged, ViewController.GETProductsView)
   .get("/carts/:idCart", notLogged, ViewController.GETCarts)
-  .get("/register", logged, ViewController.GETRegister);
+  .get("/register", logged, ViewController.GETRegister)
+  .get("/realtimeproducts", notLogged, isAdmin, (req, res) => {
+    res.render("realTimeProducts");
+    req.io.emit("sendProdc");
+  })
+  .post("/realtimeproducts", isAdmin, (req, res) => {
+    res.render("realTimeProducts");
+    req.io.emit("sendProdc");
+  })
+  .get("/chat", notLogged, isUser, (req, res) => {
+    res.render("chat");
+  });
 
 export default viewRouter;

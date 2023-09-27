@@ -2,6 +2,7 @@ import passport from "passport";
 import local from "passport-local";
 import GithubStrategy from "passport-github2";
 import UserManager from "../dao/mongo/userManager.js";
+import * as UserServices from "../services/users.service.js";
 
 const User = new UserManager();
 const LocalStrategy = local.Strategy;
@@ -44,7 +45,7 @@ const InitPassport = () => {
       { passReqToCallback: true, usernameField: "email" },
       async (req, email, password, done) => {
         try {
-          const user = await User.valUser(email, password);
+          const user = await UserServices.valUser(email, password);
           if (!user) return done("Usuario no existe" + error);
           return done(null, user);
         } catch (error) {}

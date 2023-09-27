@@ -50,7 +50,8 @@ function createOwnMessage(msg) {
 const socket = io();
 socket.on("allMessages", (messages) => {
   const user = localStorage.getItem("username");
-  const addMessage = messages.map((msg) =>
+  console.log(messages)
+  const addMessage = messages.messages.map((msg) =>
     msg.user == user ? createOwnMessage(msg.message) : createMessage(msg)
   );
   $("#messages").html(addMessage.join(" "));

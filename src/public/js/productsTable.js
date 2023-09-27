@@ -14,7 +14,7 @@ function productList(product) {
 
 const socket = io();
 socket.on("sendProdc", (products) => {
-  const tdProducts = products.map((product) => productList(product));
+  const tdProducts = products.products.map((product) => productList(product));
   $("#tableProducts").html(tdProducts.join(" "));
 });
 

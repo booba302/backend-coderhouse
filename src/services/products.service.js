@@ -106,7 +106,7 @@ export const updateProduct = async (id, product) => {
   }
 };
 
-export const deleteProduct = (id) => {
+export const deleteProduct = async (id) => {
   try {
     const delProduct = productDAO.delete(id);
     return {
