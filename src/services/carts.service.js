@@ -1,5 +1,8 @@
+import { v4 as uuidv4 } from "uuid";
+
 import CartDAO from "../dao/mongo/carts.dao.js";
 import ProductDAO from "../dao/mongo/products.dao.js";
+import * as TicketServices from "../services/ticket.service.js";
 
 const cartDAO = new CartDAO();
 const productDAO = new ProductDAO();
@@ -42,6 +45,41 @@ export const getCartsById = async (id) => {
   }
 };
 
+export const getCartPurchase = async (id, email, products) => {
+  let failedProduct = [];
+  let newCart = [];
+  let amount = 0;
+  const checkProducts = products.map(async (prd) => {
+    if (prd.product.stock >= prd.quantity) {
+      let stock = { stock: prd.product.stock - prd.quantity };
+      //await ProductService.updateProduct(prd.product._id, stock);
+      amount = amount + prd.product.price * prd.quantity;
+    } else {
+      failedProduct.push(prd);
+      console.log(failedProduct);
+    }
+  });
+  const newTicket = {
+    code: uuidv4(),
+    purchase_datetime: new Date(),
+    amount: amount,
+    purchaser: email,
+  };
+
+  const ticket = TicketServices.addTicket(newTicket);
+
+  this.emptyCart(id);
+
+  if (failedProduct) newCart = await cartDAO.update(id, failedProduct);
+
+  return {
+    code: 200,
+    msg: "Compra hecha con éxito",
+    ticket: ticket,
+    cart: newCart,
+  };
+};
+
 export const addCart = async () => {
   try {
     const newCart = await cartDAO.create();
@@ -72,14 +110,15 @@ export const addProductToCart = async (idCart, idProd) => {
         msg: "Carrito o producto no encontrado",
       };
     }
-    const findProductsInCart = findCart[0].products.find(
+    const findProductsInCart = findCart.products.find(
       (prod) => prod.product._id == idProd
     );
     if (!findProductsInCart) {
       products.push({ product: idProd, quantity: 1 });
-      await cartDAO.update(idCart, products);
+      const a = await cartDAO.update(idCart, products);
+      console.log(a);
     } else {
-      findCart[0].products.map((prod) => {
+      findCart.products.map((prod) => {
         if (prod.product._id != idProd) {
           products.push(prod);
         }

@@ -2,6 +2,7 @@ import passport from "passport";
 import local from "passport-local";
 import GithubStrategy from "passport-github2";
 import * as UserServices from "../services/users.service.js";
+import * as CartServices from "../services/carts.service.js";
 
 const LocalStrategy = local.Strategy;
 
@@ -16,6 +17,7 @@ const InitPassport = () => {
           if (userExists.code == 200) return done(null, false);
           if (userExists.code == 204) {
             const { name, lastname, age } = req.body;
+            const cart = await CartServices.addCart();
 
             const newUser = {
               name,
@@ -24,6 +26,7 @@ const InitPassport = () => {
               password,
               age,
               role: email == "adminCoder@coder.com" ? "admin" : "user",
+              cart: cart._id,
             };
 
             const user = await UserServices.addUser(newUser);
@@ -63,6 +66,7 @@ const InitPassport = () => {
         const user = await UserServices.getUserByEmail(profile._json.email);
         if (user.code == 200) return done(null, user.user);
         if (user.code == 204) {
+          const cart = await CartServices.addCart();
           const newUser = {
             name: profile._json.name.split(" ")[0],
             lastname: profile._json.name.split(" ")[1],
@@ -71,6 +75,7 @@ const InitPassport = () => {
             age: "",
             role:
               profile._json.email == "adminCoder@coder.com" ? "admin" : "user",
+            cart: cart.cart._id,
           };
 
           const createUser = await UserServices.addUser(newUser);

@@ -6,6 +6,7 @@ const userRouter = Router();
 
 userRouter
   .get("/logout", notLogged, UserController.GETLogout)
-  .get("/current", notLogged, UserController.GETCurrent);
+  .get("/current", notLogged, UserController.GETCurrent)
+  .get("/:id", UserController.GETUserById);
 
 export default userRouter;

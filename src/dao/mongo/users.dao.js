@@ -8,7 +8,7 @@ export default class UserDAO {
   }
 
   async findById(id) {
-    return await UserModel.findById(id).lean();
+    return await UserModel.findById(id).populate("cart").lean();
   }
 
   async findByEmail(email) {

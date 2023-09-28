@@ -8,9 +8,7 @@ export default class CartDAO {
   }
 
   async findById(id) {
-    return await CartModel.find({ _id: id })
-      .populate("products.product")
-      .lean();
+    return await CartModel.findById(id).populate("products.product").lean();
   }
 
   async create() {
@@ -18,7 +16,6 @@ export default class CartDAO {
   }
 
   async update(id, product) {
-    console.log(product);
     return await CartModel.findByIdAndUpdate(
       { _id: id },
       { products: product }

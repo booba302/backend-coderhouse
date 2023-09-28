@@ -81,6 +81,7 @@ export const addProduct = async (product) => {
 export const updateProduct = async (id, product) => {
   try {
     let products = await productDAO.findById(id);
+    console.log(products);
     if (products) {
       const productData = products._doc;
       const newProduct = {
