@@ -1,10 +1,8 @@
 import passport from "passport";
 import local from "passport-local";
 import GithubStrategy from "passport-github2";
-import UserManager from "../dao/mongo/userManager.js";
 import * as UserServices from "../services/users.service.js";
 
-const User = new UserManager();
 const LocalStrategy = local.Strategy;
 
 const InitPassport = () => {
@@ -14,24 +12,24 @@ const InitPassport = () => {
       { passReqToCallback: true, usernameField: "email" },
       async (req, email, password, done) => {
         try {
-          const userExists = await User.getUserByEmail(email);
+          const userExists = await UserServices.getUserByEmail(email);
+          if (userExists.code == 200) return done(null, false);
+          if (userExists.code == 204) {
+            const { name, lastname, age } = req.body;
 
-          if (userExists) return done(null, false);
+            const newUser = {
+              name,
+              lastname,
+              email,
+              password,
+              age,
+              role: email == "adminCoder@coder.com" ? "admin" : "user",
+            };
 
-          const { name, lastname, age } = req.body;
+            const user = await UserServices.addUser(newUser);
 
-          const newUser = {
-            name,
-            lastname,
-            email,
-            password,
-            age,
-            role: email == "adminCoder@coder.com" ? "admin" : "user",
-          };
-
-          const user = await User.createUser(newUser);
-
-          return done(null, user);
+            return done(null, user.user[0]);
+          }
         } catch (error) {
           return done("Error al obtener usuario" + error);
         }
@@ -62,21 +60,22 @@ const InitPassport = () => {
         callbackURL: "http://localhost:8080/api/auth/callback",
       },
       async (accessToken, refreshToken, profile, done) => {
-        const user = await User.getUserByEmail(profile._json.email);
-        if (user) return done(null, user);
+        const user = await UserServices.getUserByEmail(profile._json.email);
+        if (user.code == 200) return done(null, user.user);
+        if (user.code == 204) {
+          const newUser = {
+            name: profile._json.name.split(" ")[0],
+            lastname: profile._json.name.split(" ")[1],
+            email: profile._json.email,
+            password: "",
+            age: "",
+            role:
+              profile._json.email == "adminCoder@coder.com" ? "admin" : "user",
+          };
 
-        const newUser = {
-          name: profile._json.name.split(" ")[0],
-          lastname: profile._json.name.split(" ")[1],
-          email: profile._json.email,
-          password: "",
-          age: "",
-          role:
-            profile._json.email == "adminCoder@coder.com" ? "admin" : "user",
-        };
-
-        const createUser = await User.createUser(newUser);
-        return done(null, createUser);
+          const createUser = await UserServices.addUser(newUser);
+          return done(null, createUser.user[0]);
+        }
       }
     )
   );
@@ -85,7 +84,7 @@ const InitPassport = () => {
     done(null, user);
   });
   passport.deserializeUser(async (_id, done) => {
-    const user = await User.getUserById(_id);
+    const user = await UserServices.getUserById(_id);
     done(null, user);
   });
 };

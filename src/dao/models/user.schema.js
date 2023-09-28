@@ -41,5 +41,5 @@ userSchema.pre("findOne", function () {
   this.populate("cart");
 });
 
-const UserModel = mongoose.model("user", userSchema);
+const UserModel = mongoose.model("users", userSchema);
 export default UserModel;

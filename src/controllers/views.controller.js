@@ -10,7 +10,7 @@ export const GETLogin = async (req, res) => {
 };
 
 export const GETProductsView = async (req, res) => {
-  const { name, lastname, email, role } = req.user;
+  const { name, lastname, email, role } = req.user.user;
   const products = await ProductService.getProducts();
   res.render("products", { products, name, lastname, email, role });
 };
