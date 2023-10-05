@@ -19,6 +19,8 @@ const InitPassport = () => {
             const { name, lastname, age } = req.body;
             const cart = await CartServices.addCart();
 
+            console.log(cart);
+
             const newUser = {
               name,
               lastname,
@@ -26,7 +28,7 @@ const InitPassport = () => {
               password,
               age,
               role: email == "adminCoder@coder.com" ? "admin" : "user",
-              cart: cart._id,
+              cart: cart.cart._id,
             };
 
             const user = await UserServices.addUser(newUser);
@@ -47,7 +49,10 @@ const InitPassport = () => {
       async (req, email, password, done) => {
         try {
           const user = await UserServices.valUser(email, password);
-          if (!user) return done("Usuario no existe" + error);
+          if (!user) {
+            console.log("Usuario no existe");
+            return done(null, false);
+          }
           return done(null, user);
         } catch (error) {}
       }
