@@ -15,9 +15,9 @@ export const GETPurchase = async (req, res) => {
   const { email } = req.user.user;
   const { id } = req.params;
   const cart = await CartService.getCartsById(id);
-  const products = cart.cart.products;
-  const test = await CartService.getCartPurchase(id, email, products);
-  res.status(cart.code).send(cart);
+  const { products } = cart.cart;
+  const purchase = await CartService.getCartPurchase(id, email, products);
+  res.status(purchase.code).send(purchase);
 };
 
 export const POSTCart = async (req, res) => {
