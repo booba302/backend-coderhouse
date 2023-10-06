@@ -19,8 +19,6 @@ const InitPassport = () => {
             const { name, lastname, age } = req.body;
             const cart = await CartServices.addCart();
 
-            console.log(cart);
-
             const newUser = {
               name,
               lastname,
