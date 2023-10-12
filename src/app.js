@@ -13,6 +13,7 @@ import cartRouter from "./routers/cart.router.js";
 import productRouter from "./routers/product.router.js";
 import userRouter from "./routers/user.router.js";
 import viewRouter from "./routers/views.router.js";
+import mockRouter from "./routers/mock.router.js";
 
 import __dirname from "./config/dirname.js";
 import InitPassport from "./config/passport.config.js";
@@ -64,6 +65,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/carts", cartRouter);
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
+app.use("/mockingproducts", mockRouter);
 
 io.on("connection", async (socket) => {
   socketConnection(socket);
