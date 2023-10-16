@@ -20,6 +20,7 @@ import InitPassport from "./config/passport.config.js";
 import config from "./config/config.js";
 
 import { socketConnection } from "./controllers/socket.controller.js";
+import ErrorHandlerMiddleware from "./utils/error.middleware.js";
 
 const app = express();
 InitPassport();
@@ -41,6 +42,7 @@ app.set("view engine", "handlebars");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
+app.use(ErrorHandlerMiddleware)
 
 app.use(
   session({

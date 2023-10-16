@@ -1,5 +1,13 @@
 import ProductDAO from "../dao/mongo/products.dao.js";
 
+import CustomErrors from "../utils/CustomErrors.js";
+import enumError from "../utils/EnumError.js";
+import {
+  newProductError,
+  getProductError,
+  getProductsError,
+} from "../utils/generateError.js";
+
 const productDAO = new ProductDAO();
 
 export const getProducts = async () => {
@@ -12,12 +20,12 @@ export const getProducts = async () => {
       products: products,
     };
   } catch (e) {
-    return {
-      code: 400,
-      error: true,
-      msg: "Productos no encontrados",
-      info: e,
-    };
+    CustomErrors.createError({
+      message: "CANNOT GET PRODUCTS",
+      cause: getProductsError(),
+      name: "Get products error",
+      code: enumError.DATABASE_ERROR,
+    });
   }
 };
 
@@ -31,12 +39,12 @@ export const getFilteredProducts = async (limit, page, filter, order) => {
       products: products,
     };
   } catch (e) {
-    return {
-      code: 400,
-      error: true,
-      msg: "Productos no encontrados",
-      info: e,
-    };
+    CustomErrors.createError({
+      message: "CANNOT GET PRODUCTS",
+      cause: getProductsError(),
+      name: "Get products error",
+      code: enumError.DATABASE_ERROR,
+    });
   }
 };
 
@@ -50,12 +58,12 @@ export const getProductById = async (id) => {
       product: product,
     };
   } catch (e) {
-    return {
-      code: 400,
-      error: true,
-      msg: "Ocurrió un error al hacer la búsqueda",
-      info: e,
-    };
+    CustomErrors.createError({
+      message: "CANNOT GET PRODUCTS",
+      cause: getProductError(id),
+      name: "Get products error",
+      code: enumError.DATABASE_ERROR,
+    });
   }
 };
 
@@ -69,12 +77,12 @@ export const addProduct = async (product) => {
       product: newProduct,
     };
   } catch (e) {
-    return {
-      code: 400,
-      error: true,
-      msg: "Ocurrió un error al agregar el producto",
-      info: e,
-    };
+    CustomErrors.createError({
+      message: "CANNOT CREATE PRODUCT",
+      cause: newProductError(product),
+      name: "Product Error",
+      code: enumError.USER_INPUT_ERROR,
+    });
   }
 };
 
