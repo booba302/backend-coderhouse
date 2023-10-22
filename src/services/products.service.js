@@ -58,12 +58,12 @@ export const getProductById = async (id) => {
       product: product,
     };
   } catch (e) {
-    CustomErrors.createError({
-      message: "CANNOT GET PRODUCTS",
-      cause: getProductError(id),
-      name: "Get products error",
-      code: enumError.DATABASE_ERROR,
-    });
+    return {
+      code: 400,
+      error: true,
+      msg: "Ocurrió un error al hacer la búsqueda",
+      info: e,
+    };
   }
 };
 

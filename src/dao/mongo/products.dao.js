@@ -29,6 +29,6 @@ export default class ProductDAO {
   }
 
   async delete(id) {
-    return await ProductModel.findByIdAndDelete(id)
+    return await ProductModel.findByIdAndDelete(id);
   }
 }
