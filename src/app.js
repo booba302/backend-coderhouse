@@ -76,4 +76,3 @@ io.on("connection", async (socket) => {
 httpServer.listen(config.port, () => {
   console.log(`Escuchando puerto: ${config.port}`);
 });
-//
