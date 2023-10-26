@@ -42,7 +42,7 @@ app.set("view engine", "handlebars");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
-app.use(ErrorHandlerMiddleware)
+app.use(ErrorHandlerMiddleware);
 
 app.use(
   session({
@@ -76,5 +76,3 @@ io.on("connection", async (socket) => {
 httpServer.listen(config.port, () => {
   console.log(`Escuchando puerto: ${config.port}`);
 });
-
-//
