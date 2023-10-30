@@ -1,5 +1,6 @@
 import { Router } from "express";
 import * as ViewController from "../controllers/views.controller.js";
+import * as UserController from "../controllers/users.controller.js"
 import {
   notLogged,
   logged,
@@ -25,6 +26,9 @@ viewRouter
   })
   .get("/chat", notLogged, isUser, (req, res) => {
     res.render("chat");
-  });
+  })
+  .get("/recoverpassword", ViewController.GETPasswordRecovery)
+  .get("/resetpassword", ViewController.GETResetPassword)
+  .post("/resetpassword", ViewController.POSTResetPassword)
 
 export default viewRouter;

@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
+import cors from "cors";
 
 import authRouter from "./routers/auth.router.js";
 import cartRouter from "./routers/cart.router.js";

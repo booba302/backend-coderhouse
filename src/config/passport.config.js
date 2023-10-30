@@ -3,6 +3,7 @@ import local from "passport-local";
 import GithubStrategy from "passport-github2";
 import * as UserServices from "../services/users.service.js";
 import * as CartServices from "../services/carts.service.js";
+import config from "./config.js";
 
 const LocalStrategy = local.Strategy;
 
@@ -61,9 +62,9 @@ const InitPassport = () => {
     "github",
     new GithubStrategy(
       {
-        clientID: "Iv1.2d596fddc5240812",
-        clientSecret: "6b5c1aeddd0a826f4f96976eee54f8381d6e8517",
-        callbackURL: "http://localhost:8080/api/auth/callback",
+        clientID: config.clientID,
+        clientSecret: config.clientSecret,
+        callbackURL: config.callbackURL,
       },
       async (accessToken, refreshToken, profile, done) => {
         const user = await UserServices.getUserByEmail(profile._json.email);

@@ -5,6 +5,81 @@
     <h3>Correo: {{email}}</h3>
     <h3>Rol: {{role}}</h3>
   </div>
+  <div>
+    <form class="row g-3" id="add-form">
+      <h1>Agregar producto </h1>
+      <div class="col-2">
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          placeholder="Nombre"
+          required
+        />
+      </div>
+      <div class="col-2">
+        <input
+          type="text"
+          class="form-control"
+          id="description"
+          placeholder="Descripción"
+          required
+        />
+      </div>
+      <div class="col-1">
+        <input
+          type="text"
+          class="form-control"
+          id="price"
+          placeholder="Precio"
+          required
+        />
+      </div>
+      <div class="col-3">
+        <input
+          type="text"
+          class="form-control"
+          id="thumbnail"
+          placeholder="Imagen"
+          required
+        />
+      </div>
+      <div class="col-1">
+        <input
+          type="text"
+          class="form-control"
+          id="code"
+          placeholder="Código"
+          required
+        />
+      </div>
+      <div class="col-1">
+        <input
+          type="text"
+          class="form-control"
+          id="stock"
+          placeholder="Stock"
+          required
+        />
+      </div>
+      <div class="col-1">
+        <input
+          type="text"
+          class="form-control"
+          id="category"
+          placeholder="Categoria"
+          required
+        />
+      </div>
+      <div class="col-1">
+        <button
+          type="submit"
+          id="button-add"
+          class="btn btn-primary mb-3"
+        >Agregar</button>
+      </div>
+    </form>
+  </div>
   <h1>Lista de productos </h1>
   <table class="table table-hover">
     <thead>

@@ -15,6 +15,10 @@ export default class UserDAO {
     return await UserModel.findOne({ email });
   }
 
+  async update(id, user) {
+    return await UserModel.updateOne({ _id: id }, user)
+  }
+
   async create(user) {
     return await UserModel.insertMany(user);
   }

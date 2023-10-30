@@ -1,7 +1,10 @@
 import UserDAO from "../dao/mongo/users.dao.js";
+import TokenDAO from "../dao/mongo/token.dao.js";
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 
 const userDAO = new UserDAO();
+const tokenDAO = new TokenDAO();
 
 export const valUser = async (email, password) => {
   try {
@@ -60,6 +63,43 @@ export const getUserByEmail = async (email) => {
   }
 };
 
+export const recoverPassword = async (email) => {
+  try {
+    const user = await userDAO.findByEmail(email);
+    if (!user) {
+      return {
+        code: 204,
+        error: false,
+        msg: "Usuario no existe",
+      };
+    }
+    const token = await tokenDAO.find(user._id);
+    if (token) await token.deleteOne();
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(resetToken, salt);
+
+    await tokenDAO.create({
+      userId: user._id,
+      token: hash,
+      createdAt: Date.now(),
+    });
+
+    const link = `http://localhost:8080/resetpassword?token=${resetToken}&id=${user._id}`;
+    return {
+      code: 200,
+      error: false,
+      msg: "Enlace de recuperación creado",
+      link: link,
+    };
+  } catch (error) {
+    return {
+      code: 400,
+      error: true,
+    };
+  }
+};
+
 export const addUser = async (user) => {
   try {
     const salt = await bcrypt.genSalt(10);
@@ -77,6 +117,66 @@ export const addUser = async (user) => {
       code: 400,
       error: true,
       msg: "Ocurrió un error al agregar el usuario",
+      info: e,
+    };
+  }
+};
+
+export const updateUser = async (id, user) => {
+  let users = await userDAO.findById(id);
+  if (users) {
+    const userData = users._doc;
+    const newUser = {
+      ...userData,
+      ...user,
+    };
+    await userDAO.update(id, newUser);
+    users = await userDAO.findById(id);
+    return {
+      code: 201,
+      error: false,
+      msg: `Usuario actualizado`,
+      user: users,
+    };
+  }
+};
+
+export const resetPassword = async (id, token, password) => {
+  try {
+    const passwordResetToken = await tokenDAO.find(id);
+    if (!passwordResetToken) {
+      return {
+        code: 204,
+        error: true,
+        msg: "Token inválido o expiró",
+      };
+    }
+
+    const isValid = await bcrypt.compare(token, passwordResetToken.token);
+    if (!isValid) {
+      return {
+        code: 204,
+        error: true,
+        msg: "Token inválido o expiró",
+      };
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPwd = await bcrypt.hash(password, salt);
+
+    await userDAO.update(id, { password: hashedPwd });
+    await passwordResetToken.deleteOne();
+
+    return {
+      code: 201,
+      error: false,
+      msg: `Contraseña actualizada`,
+    };
+  } catch (e) {
+    return {
+      code: 400,
+      error: true,
+      msg: "Ocurrió un error al actualizar el usuario",
       info: e,
     };
   }

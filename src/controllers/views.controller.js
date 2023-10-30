@@ -10,7 +10,6 @@ export const GETLogin = async (req, res) => {
 };
 
 export const GETProductsView = async (req, res) => {
-  console.log(req.user);
   const { name, lastname, email, role } = req.user.user;
   const products = await ProductService.getProducts();
   res.render("products", { products, name, lastname, email, role });
@@ -25,4 +24,20 @@ export const GETCarts = async (req, res) => {
 
 export const GETRegister = async (req, res) => {
   res.render("register");
+};
+
+export const GETPasswordRecovery = async (req, res) => {
+  res.render("recoverPassword");
+};
+
+export const GETResetPassword = async (req, res) => {
+  const { id, token } = req.query;
+  res.render("resetPassword", { id, token });
+};
+
+export const POSTResetPassword = async (req, res) => {
+  console.log(qadasdasdasd);
+  const { password } = req.body;
+  console.log(password);
+  /* Lógica de envío de correo */
 };
