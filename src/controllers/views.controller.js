@@ -34,10 +34,3 @@ export const GETResetPassword = async (req, res) => {
   const { id, token } = req.query;
   res.render("resetPassword", { id, token });
 };
-
-export const POSTResetPassword = async (req, res) => {
-  console.log(qadasdasdasd);
-  const { password } = req.body;
-  console.log(password);
-  /* Lógica de envío de correo */
-};

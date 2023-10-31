@@ -29,6 +29,5 @@ viewRouter
   })
   .get("/recoverpassword", ViewController.GETPasswordRecovery)
   .get("/resetpassword", ViewController.GETResetPassword)
-  .post("/resetpassword", ViewController.POSTResetPassword)
 
 export default viewRouter;
