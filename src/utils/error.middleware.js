@@ -1,4 +1,4 @@
-import enumError from "./EnumError.js";
+import enumError from "./enumError.js";
 
 const ErrorHandlerMiddleware = (error, req, res, next) => {
   console.log(error);

@@ -1,7 +1,7 @@
 import ProductDAO from "../dao/mongo/products.dao.js";
 
-import CustomErrors from "../utils/CustomErrors.js";
-import enumError from "../utils/EnumError.js";
+import CustomErrors from "../utils/customErrors.js";
+import enumError from "../utils/enumError.js";
 import {
   newProductError,
   getProductError,

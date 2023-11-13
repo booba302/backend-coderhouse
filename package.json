@@ -6,7 +6,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/app.js"
+    "start": "node ./src/app.js",
+    "dev": "nodemon ./src/app.js",
+    "image-prod": "docker build -t api-great-henge-prod .",
+    "image-dev": "docker build -t api-great-henge-dev .",
+    "container-prod": "docker run -p 9999:8080 api-great-henge-prod",
+    "container-dev": "docker run -p 8888:8080 api-great-henge-dev"
   },
   "keywords": [],
   "author": "",
@@ -25,7 +30,7 @@
     "mongoose": "^7.4.2",
     "mongoose-paginate-v2": "^1.7.31",
     "nodemailer": "^6.9.7",
-    "nodemon": "^2.0.22",
+    "nodemon": "^3.0.1",
     "passport": "^0.6.0",
     "passport-github2": "^0.1.12",
     "passport-jwt": "^4.0.1",
