@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
+import methodOverride from "method-override"
 import cors from "cors";
 
 import authRouter from "./routers/auth.router.js";
@@ -44,6 +45,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(ErrorHandlerMiddleware);
+app.use(methodOverride("_method"))
 
 app.use(
   session({

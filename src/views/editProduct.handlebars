@@ -1,0 +1,134 @@
+<link
+  rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
+/>
+<link
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+  rel="stylesheet"
+/>
+<div class="form-gap"></div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="text-center">
+            <h3><i class="fa fa-lock fa-4x"></i></h3>
+            <h2 class="text-center">Crear Producto</h2>
+            <div class="panel-body">
+
+              <form
+                id="register-form"
+                role="form"
+                autocomplete="off"
+                class="form"
+                action="/api/products/{{id}}?_method=PUT"
+                method="post"
+              >
+                <input type="hidden" name="_method" value="PUT" />
+                <div class="form-group">
+                  <div class="input-group">
+                    <label for="title">Título</label>
+                    <input
+                      id="title"
+                      name="title"
+                      value="{{product.product.title}}"
+                      placeholder="Título"
+                      class="form-control"
+                      type="text"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <label for="description">Descripción</label>
+                    <input
+                      id="description"
+                      name="description"
+                      value="{{product.product.description}}"
+                      placeholder="Descripción"
+                      class="form-control"
+                      type="text"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <label for="price">Precio</label>
+                    <input
+                      id="price"
+                      name="price"
+                      value="{{product.product.price}}"
+                      placeholder="Precio"
+                      class="form-control"
+                      type="text"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <label for="thumbnail">URL de Imagen</label>
+                    <input
+                      id="thumbnail"
+                      name="thumbnail"
+                      value="{{product.product.thumbnail}}"
+                      placeholder="Imagen"
+                      class="form-control"
+                      type="text"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <label for="code">Código</label>
+                    <input
+                      id="code"
+                      name="code"
+                      value="{{product.product.code}}"
+                      placeholder="Código"
+                      class="form-control"
+                      type="text"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <label for="stock">Stock</label>
+                    <input
+                      id="stock"
+                      name="stock"
+                      value="{{product.product.stock}}"
+                      placeholder="Stock"
+                      class="form-control"
+                      type="text"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <label for="category">Categoría</label>
+                    <input
+                      id="category"
+                      name="category"
+                      value="{{product.product.category}}"
+                      placeholder="Categoría"
+                      class="form-control"
+                      type="text"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <button
+                    type="submit"
+                    id="button-add"
+                    class="btn btn-primary mb-3"
+                  >Guardar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

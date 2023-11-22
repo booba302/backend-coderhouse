@@ -1,8 +1,8 @@
 import * as ProductService from "../services/products.service.js";
 import * as CartService from "../services/carts.service.js";
 
-export const GETRoot = async (req, res) => {
-  res.redirect("/login");
+export const GETIndex = async (req, res) => {
+  res.render("index");
 };
 
 export const GETLogin = async (req, res) => {
@@ -10,9 +10,39 @@ export const GETLogin = async (req, res) => {
 };
 
 export const GETProductsView = async (req, res) => {
-  const { name, lastname, email, role } = req.user.user;
   const products = await ProductService.getProducts();
-  res.render("products", { products, name, lastname, email, role });
+  if (req.user) {
+    let roles = {};
+    let name, lastname, email, role, cart;
+    if (req.user) {
+      ({ name, lastname, email, role, cart } = req.user);
+      roles = { [role]: true };
+    } else {
+      roles = { notLogged: true };
+    }
+    res.render("products", {
+      products,
+      roles,
+      name,
+      lastname,
+      email,
+      role,
+      cart,
+    });
+  } else {
+    console.log(products);
+    res.render("indexProducts", { products });
+  }
+};
+
+export const GETNewProducts = async (req, res) => {
+  res.render("newProduct");
+};
+
+export const GETEditProduct = async (req, res) => {
+  const { id } = req.params;
+  const product = await ProductService.getProductById(id);
+  res.render("editProduct", { product, id });
 };
 
 export const GETCarts = async (req, res) => {

@@ -26,6 +26,7 @@ export const GETProductsById = async (req, res) => {
 };
 
 export const POSTProduct = async (req, res) => {
+  console.log(req.body);
   const body = req.body;
   const product = await ProductService.addProduct(body);
   res.status(product.code).send(product);

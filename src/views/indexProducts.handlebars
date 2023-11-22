@@ -1,0 +1,60 @@
+<div>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">The Great Henge</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" href="/products">Productos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/register">Registrate</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/login">Inicia Sesión</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
+<div>
+  <h1>Lista de productos </h1>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <td scope="col">Nombre</td>
+        <td scope="col">Descripción</td>
+        <td scope="col">Precio</td>
+        <td scope="col">Imagen</td>
+        <td scope="col">Código</td>
+        <td scope="col">Stock</td>
+        <td scope="col">Categoría</td>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each products.products}}
+        <tr>
+          <td scope="col"> {{this.title}} </td>
+          <td scope="col"> {{this.description}} </td>
+          <td scope="col"> {{this.price}} </td>
+          <td scope="col"><img src={{this.thumbnail}} /></td>
+          <td scope="col"> {{this.code}} </td>
+          <td scope="col"> {{this.stock}} </td>
+          <td scope="col"> {{this.category}} </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

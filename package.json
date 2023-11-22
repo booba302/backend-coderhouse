@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./src/app.js",
+    "start": "nodemon ./src/app.js",
     "dev": "nodemon ./src/app.js",
     "image-prod": "docker build -t api-great-henge-prod .",
     "image-dev": "docker build -t api-great-henge-dev .",
@@ -27,6 +27,7 @@
     "express-handlebars": "^7.1.0",
     "express-session": "^1.17.3",
     "jsonwebtoken": "^9.0.2",
+    "method-override": "^3.0.0",
     "mongoose": "^7.4.2",
     "mongoose-paginate-v2": "^1.7.31",
     "nodemailer": "^6.9.7",

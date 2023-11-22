@@ -35,7 +35,6 @@ export const GETUserById = async (req, res) => {
 export const POSTRecoverPassword = async (req, res) => {
   const { email } = req.body;
   const user = await UserServices.recoverPassword(email);
-  console.log(user.link);
   if (user.code !== 200) {
     res.render("notFound");
   } else {

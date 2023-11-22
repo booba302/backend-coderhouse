@@ -17,7 +17,7 @@ export default class ProductDAO {
   }
 
   async findById(id) {
-    return await ProductModel.findById(id);
+    return await ProductModel.findById(id).lean();
   }
 
   async create(product) {

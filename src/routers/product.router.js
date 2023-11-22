@@ -7,8 +7,8 @@ const productRouter = Router();
 productRouter
   .get("/", ProductController.GETProducts)
   .get("/:id", ProductController.GETProductsById)
-  .post("/", isAdmin, ProductController.POSTProduct)
-  .put("/:id", isAdmin, ProductController.PUTProduct)
+  .post("/", ProductController.POSTProduct)
+  .put("/:id", ProductController.PUTProduct)
   .delete("/:id", isAdmin, ProductController.DELETEProduct);
 
 export default productRouter;
