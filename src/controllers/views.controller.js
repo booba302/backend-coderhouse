@@ -43,7 +43,14 @@ export const GETEditProduct = async (req, res) => {
 export const GETCarts = async (req, res) => {
   const { idCart } = req.params;
   const productsInCart = await CartService.getCartsById(idCart);
-  const products = productsInCart.cart[0].products;
+  const products = productsInCart.cart.products;
+  let total = 0;
+  for (let i = 0; i < products.length; i++) {
+    let subtotal = products[i].product.price * products[i].quantity;
+    products[i].product.subtotal = subtotal.toFixed(2);
+    total = total + subtotal;
+    products.total = total.toFixed(2);
+  }
   res.render("cart", { idCart, products });
 };
 

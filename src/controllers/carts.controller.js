@@ -11,15 +11,6 @@ export const GETCartById = async (req, res) => {
   res.status(cart.code).send(cart);
 };
 
-export const GETPurchase = async (req, res) => {
-  const { email } = req.user.user;
-  const { id } = req.params;
-  const cart = await CartService.getCartsById(id);
-  const { products } = cart.cart;
-  const purchase = await CartService.getCartPurchase(id, email, products);
-  res.status(purchase.code).send(purchase);
-};
-
 export const POSTCart = async (req, res) => {
   const cart = await CartService.addCart();
   res.status(cart.code).send(cart);

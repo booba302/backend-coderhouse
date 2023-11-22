@@ -7,7 +7,6 @@ const cartRouter = Router();
 cartRouter
   .get("/", CartController.GETCarts)
   .get("/:id", CartController.GETCartById)
-  .get("/:id/purchase", CartController.GETPurchase)
   .post("/", CartController.POSTCart)
   .post("/:idCart/product/:idProd", CartController.POSTProductToCart)
   .put("/:idCart", isUser, CartController.PUTCart)
