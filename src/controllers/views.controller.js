@@ -11,15 +11,10 @@ export const GETLogin = async (req, res) => {
 
 export const GETProductsView = async (req, res) => {
   const products = await ProductService.getProducts();
+  let roles = {};
   if (req.user) {
-    let roles = {};
-    let name, lastname, email, role, cart;
-    if (req.user) {
-      ({ name, lastname, email, role, cart } = req.user);
-      roles = { [role]: true };
-    } else {
-      roles = { notLogged: true };
-    }
+    const { name, lastname, email, role, cart } = req.user;
+    roles = { [role]: true };
     res.render("products", {
       products,
       roles,
@@ -30,7 +25,7 @@ export const GETProductsView = async (req, res) => {
       cart,
     });
   } else {
-    console.log(products);
+    roles = { notLogged: true };
     res.render("indexProducts", { products });
   }
 };
