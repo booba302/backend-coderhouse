@@ -5,7 +5,7 @@ import config from "../config/config.js";
 import nodemailer from "nodemailer";
 
 const transport = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.ethereal.email",
   port: 587,
   auth: {
     user: config.mailUser,
@@ -52,6 +52,6 @@ export const POSTRecoverPassword = async (req, res) => {
 export const POSTResetPassword = async (req, res) => {
   const { token, id } = req.params;
   const { password } = req.body;
-   const updPassword = await UserServices.resetPassword(id, token, password);
+  const updPassword = await UserServices.resetPassword(id, token, password);
   res.send(updPassword);
 };
