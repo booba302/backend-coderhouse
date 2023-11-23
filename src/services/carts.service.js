@@ -1,10 +1,8 @@
-import CartDAO from "../dao/mongo/carts.dao.js";
-import ProductDAO from "../dao/mongo/products.dao.js";
-import * as TicketServices from "../services/ticket.service.js";
+import dao from "../dao/factory.js";
 
-
-const cartDAO = new CartDAO();
-const productDAO = new ProductDAO();
+const { Cart, Product } = dao;
+const cartDAO = new Cart();
+const productDAO = new Product();
 
 export const getCarts = async () => {
   try {
@@ -43,8 +41,6 @@ export const getCartsById = async (id) => {
     };
   }
 };
-
-
 
 export const addCart = async () => {
   try {

@@ -1,4 +1,7 @@
-import ProductDAO from "../dao/mongo/products.dao.js";
+import dao from "../dao/factory.js";
+
+const { Product } = dao;
+const productDAO = new Product();
 
 import CustomErrors from "../utils/customErrors.js";
 import enumError from "../utils/enumError.js";
@@ -7,8 +10,6 @@ import {
   getProductError,
   getProductsError,
 } from "../utils/generateError.js";
-
-const productDAO = new ProductDAO();
 
 export const getProducts = async () => {
   try {

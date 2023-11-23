@@ -1,12 +1,13 @@
-import TicketDAO from "../dao/mongo/ticket.dao.js";
-import CartDAO from "../dao/mongo/carts.dao.js";
+import dao from "../dao/factory.js";
+
+const { Ticket, Cart } = dao;
+
+const cartDAO = new Cart();
+const ticketDAO = new Ticket();
 
 import { v4 as uuidv4 } from "uuid";
 
 import * as ProductService from "../services/products.service.js";
-
-const cartDAO = new CartDAO();
-const ticketDAO = new TicketDAO();
 
 export const getPurchase = async (id, email, products) => {
   try {

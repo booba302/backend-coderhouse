@@ -1,6 +1,10 @@
-import dotenv from "dotenv";
+import { config } from "dotenv";
+import args from "./args.js";
 
-dotenv.config();
+const MODE = args.mode;
+const ENV_PATH = MODE == "dev" ? "./.env.dev" : "./.env.prod";
+
+config({ path: ENV_PATH });
 
 export default {
   mongoUrl: process.env.MONGO_URL,

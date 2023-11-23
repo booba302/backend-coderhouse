@@ -2,7 +2,6 @@ import express from "express";
 import { Server as HTTPServer } from "http";
 import { Server as SocketIO } from "socket.io";
 import handlebars from "express-handlebars";
-import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
@@ -27,8 +26,6 @@ import ErrorHandlerMiddleware from "./utils/error.middleware.js";
 
 const app = express();
 InitPassport();
-
-const conn = await mongoose.connect(config.mongoUrl);
 
 const httpServer = HTTPServer(app);
 const io = new SocketIO(httpServer);

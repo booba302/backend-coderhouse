@@ -1,10 +1,12 @@
-import UserDAO from "../dao/mongo/users.dao.js";
-import TokenDAO from "../dao/mongo/token.dao.js";
+import dao from "../dao/factory.js";
+
+const { User, Token } = dao;
+
+const userDAO = new User();
+const tokenDAO = new Token();
+
 import bcrypt from "bcrypt";
 import crypto from "crypto";
-
-const userDAO = new UserDAO();
-const tokenDAO = new TokenDAO();
 
 export const valUser = async (email, password) => {
   try {
