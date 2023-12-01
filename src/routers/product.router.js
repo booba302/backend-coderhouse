@@ -1,14 +1,14 @@
 import { Router } from "express";
 import * as ProductController from "../controllers/products.controller.js";
-import { isAdmin } from "../utils/secure.middleware.js";
+import { isUser } from "../utils/secure.middleware.js";
 
 const productRouter = Router();
 
 productRouter
-  .get("/", ProductController.GETProducts)
+  .get("/", isUser, ProductController.GETProducts)
   .get("/:id", ProductController.GETProductsById)
-  .post("/", ProductController.POSTProduct)
-  .put("/:id", ProductController.PUTProduct)
-  .delete("/:id", isAdmin, ProductController.DELETEProduct);
+  .post("/", isUser, ProductController.POSTProduct)
+  .put("/:id", isUser, ProductController.PUTProduct)
+  .delete("/:id", isUser, ProductController.DELETEProduct);
 
 export default productRouter;

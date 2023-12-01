@@ -1,21 +1,17 @@
 import { Router } from "express";
 import * as CartController from "../controllers/carts.controller.js";
-import { isUser } from "../utils/secure.middleware.js";
+import { isAdmin } from "../utils/secure.middleware.js";
 
 const cartRouter = Router();
 
 cartRouter
-  .get("/", CartController.GETCarts)
+  .get("/", isAdmin, CartController.GETCarts)
   .get("/:id", CartController.GETCartById)
-  .post("/", CartController.POSTCart)
+  .post("/", isAdmin, CartController.POSTCart)
   .post("/:idCart/product/:idProd", CartController.POSTProductToCart)
-  .put("/:idCart", isUser, CartController.PUTCart)
-  .put("/:idCart/product/:idProd", isUser, CartController.PUTQuantityInCart)
-  .delete("/:idCart", isUser, CartController.DELETEEmptyCart)
-  .delete(
-    "/:idCart/product/:idProd",
-    isUser,
-    CartController.DELETEProductInCart
-  );
+  .put("/:idCart", isAdmin, CartController.PUTCart)
+  .put("/:idCart/product/:idProd", CartController.PUTQuantityInCart)
+  .delete("/:idCart", isAdmin, CartController.DELETEEmptyCart)
+  .delete("/:idCart/product/:idProd", CartController.DELETEProductInCart);
 
 export default cartRouter;

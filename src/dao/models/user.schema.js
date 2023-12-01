@@ -28,17 +28,9 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["admin", "user"],
+    enum: ["admin", "user", "premium"],
     default: "user",
   },
-});
-
-userSchema.pre("find", function () {
-  this.populate("cart");
-});
-
-userSchema.pre("findOne", function () {
-  this.populate("cart");
 });
 
 const UserModel = mongoose.model("users", userSchema);

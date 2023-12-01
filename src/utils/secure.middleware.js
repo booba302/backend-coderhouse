@@ -8,20 +8,23 @@ export const notLogged = (req, res, next) => {
   next();
 };
 
-export const isAdmin = (req, res, next) => {
-  if (req.user.user.role != "admin")
+export const isUser = (req, res, next) => {
+  const { role } = req.user
+  if (role === "user")
     return res.status(403).send({
       error: true,
-      msg: "No posee permisos de administrador para realizar la acción",
+      msg: "Only Admin or Premium users allowed",
     });
   next();
 };
 
-export const isUser = (req, res, next) => {
-  if (req.user.user.role != "user")
+export const isAdmin = (req, res, next) => {
+  const { role } = req.user
+  if (role === "admin")
     return res.status(403).send({
       error: true,
-      msg: "No posee permisos de usuario para realizar la acción",
+      msg: "Only Users or Premium users allowed",
     });
   next();
 };
+

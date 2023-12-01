@@ -30,6 +30,18 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "users",
+  },
+});
+
+productSchema.pre("find", function () {
+  this.populate("owner");
+});
+
+productSchema.pre("findOne", function () {
+  this.populate("owner");
 });
 
 productSchema.plugin(mongoosePaginate);

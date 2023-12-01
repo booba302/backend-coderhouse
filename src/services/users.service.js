@@ -183,3 +183,18 @@ export const resetPassword = async (id, token, password) => {
     };
   }
 };
+
+export const premiumUser = async (id) => {
+  try {
+    const user = await userDAO.findById(id);
+    if (user) {
+      const userUpdated = await userDAO.update(id, { role: "premium" });
+      return {
+        code: 201,
+        error: false,
+        msg: `Usuario actualizado`,
+        user: userUpdated,
+      };
+    }
+  } catch (error) {}
+};

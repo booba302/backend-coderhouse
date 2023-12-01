@@ -55,3 +55,9 @@ export const POSTResetPassword = async (req, res) => {
   const updPassword = await UserServices.resetPassword(id, token, password);
   res.send(updPassword);
 };
+
+export const GETPremiumUser = async (req, res) => {
+  const { _id: id } = req.user;
+  const user = await UserServices.premiumUser(id);
+  res.send(user);
+};
