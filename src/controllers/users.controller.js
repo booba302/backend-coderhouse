@@ -4,6 +4,9 @@ import config from "../config/config.js";
 
 import nodemailer from "nodemailer";
 
+import CustomErrors from "../utils/customErrors.js";
+import ERROR_DICTIONARY from "../config/errorDictionary.js";
+
 const transport = nodemailer.createTransport({
   host: "smtp.ethereal.email",
   port: 587,
@@ -13,51 +16,76 @@ const transport = nodemailer.createTransport({
   },
 });
 
-export const GETLogout = (req, res) => {
+export const GETLogout = (req, res, next) => {
   req.session.destroy((er) => {
     res.send("Se ha cerrado la sesión correctamente");
   });
 };
 
-export const GETCurrent = (req, res) => {
+export const GETCurrent = (req, res, next) => {
   const user = req.user;
   if (!user) return res.send("No existe usuario loggeado");
   const userDTO = new UserDTO(user);
   res.send({ user: userDTO });
 };
 
-export const GETUserById = async (req, res) => {
+export const GETUserById = async (req, res, next) => {
   const { id } = req.params;
-  const user = await UserServices.getUserById(id);
-  res.send(user);
-};
-
-export const POSTRecoverPassword = async (req, res) => {
-  const { email } = req.body;
-  const user = await UserServices.recoverPassword(email);
-  if (user.code !== 200) {
-    res.render("notFound");
-  } else {
-    const mail = await transport.sendMail({
-      from: "The Great Henge <josh.dietrich87@ethereal.email>",
-      to: email,
-      subject: "Cambio de contraseña",
-      text: "Cambio de contraseña",
-      html: `<a href=${user.link}>Restaura tu contraseña acá</a>`,
-    });
-    res.render("found");
+  try {
+    const user = await UserServices.getUserById(id);
+    if (!user) return CustomErrors.create(ERROR_DICTIONARY.default);
+    res.send(user);
+  } catch (error) {
+    error.from = error.from || "CONTROLLER";
+    next(error);
   }
 };
 
-export const POSTResetPassword = async (req, res) => {
-  const { token, id } = req.params;
-  const { password } = req.body;
-  const updPassword = await UserServices.resetPassword(id, token, password);
-  res.send(updPassword);
+export const POSTRecoverPassword = async (req, res, next) => {
+  const { email } = req.body;
+  try {
+    const user = await UserServices.recoverPassword(email);
+    if (!user) return CustomErrors.create(ERROR_DICTIONARY.default);
+    if (user.code !== 200) {
+      res.render("notFound");
+    } else {
+      const mail = await transport.sendMail({
+        from: "The Great Henge <josh.dietrich87@ethereal.email>",
+        to: email,
+        subject: "Cambio de contraseña",
+        text: "Cambio de contraseña",
+        html: `<a href=${user.link}>Restaura tu contraseña acá</a>`,
+      });
+      if (!mail) return CustomErrors.create(ERROR_DICTIONARY.default);
+      res.render("found");
+    }
+  } catch (error) {
+    error.from = error.from || "CONTROLLER";
+    next(error);
+  }
 };
 
-export const GETPremiumUser = async (req, res) => {
+export const POSTResetPassword = async (req, res, next) => {
+  const { token, id } = req.params;
+  const { password } = req.body;
+  try {
+    const updPassword = await UserServices.resetPassword(id, token, password);
+    if (!updPassword) return CustomErrors.create(ERROR_DICTIONARY.default);
+    res.send(updPassword);
+  } catch (error) {
+    error.from = error.from || "CONTROLLER";
+    next(error);
+  }
+};
+
+export const GETPremiumUser = async (req, res, next) => {
   const { _id: id } = req.user;
-  const user = await UserServices.premiumUser(id);
-  res.send(user);
+  try {
+    const user = await UserServices.premiumUser(id);
+    if (!user) return CustomErrors.create(ERROR_DICTIONARY.default);
+    res.send(user);
+  } catch (error) {
+    error.from = error.from || "CONTROLLER";
+    next(error);
+  }
 };

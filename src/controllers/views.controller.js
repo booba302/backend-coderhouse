@@ -1,6 +1,9 @@
 import * as ProductService from "../services/products.service.js";
 import * as CartService from "../services/carts.service.js";
 
+import CustomErrors from "../utils/customErrors.js";
+import ERROR_DICTIONARY from "../config/errorDictionary.js";
+
 export const GETIndex = async (req, res) => {
   res.render("index");
 };

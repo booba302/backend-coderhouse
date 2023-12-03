@@ -50,7 +50,7 @@ export const getFilteredProducts = async (limit, page, filter, order) => {
 };
 
 export const getProductById = async (id) => {
-  try {
+  /* try {
     const product = await productDAO.findById(id);
     return {
       code: 200,
@@ -65,7 +65,7 @@ export const getProductById = async (id) => {
       msg: "Ocurrió un error al hacer la búsqueda",
       info: e,
     };
-  }
+  } */
 };
 
 export const addProduct = async (product) => {
