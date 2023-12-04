@@ -4,26 +4,56 @@ export default class UserDAO {
   constructor() {}
 
   async find() {
-    return await UserModel.find().lean();
+    try {
+      return await UserModel.find().lean();
+    } catch (error) {
+      error.from = "DAO";
+      throw error;
+    }
   }
 
   async findById(id) {
-    return await UserModel.findById(id).populate("cart").lean();
+    try {
+      return await UserModel.findById(id).populate("cart").lean();
+    } catch (error) {
+      error.from = "DAO";
+      throw error;
+    }
   }
 
   async findByEmail(email) {
-    return await UserModel.findOne({ email });
+    try {
+      return await UserModel.findOne({ email });
+    } catch (error) {
+      error.from = "DAO";
+      throw error;
+    }
   }
 
   async update(id, user) {
-    return await UserModel.updateOne({ _id: id }, user)
+    try {
+      return await UserModel.updateOne({ _id: id }, user);
+    } catch (error) {
+      error.from = "DAO";
+      throw error;
+    }
   }
 
   async create(user) {
-    return await UserModel.insertMany(user);
+    try {
+      return await UserModel.insertMany(user);
+    } catch (error) {
+      error.from = "DAO";
+      throw error;
+    }
   }
 
   async delete(id) {
-    return await UserModel.findByIdAndDelete(id);
+    try {
+      return await UserModel.findByIdAndDelete(id);
+    } catch (error) {
+      error.from = "DAO";
+      throw error;
+    }
   }
 }

@@ -8,27 +8,52 @@ export default class ProductDAO {
   }
 
   async findFiltered(limit, page, filter, order) {
-    return await ProductModel.paginate(filter, {
-      limit: limit,
-      page: page,
-      sort: order,
-      lean: true,
-    });
+    try {
+      return await ProductModel.paginate(filter, {
+        limit: limit,
+        page: page,
+        sort: order,
+        lean: true,
+      });
+    } catch (error) {
+      error.from = "DAO";
+      throw error;
+    }
   }
 
   async findById(id) {
-    return await ProductModel.findById(id).lean();
+    try {
+      return await ProductModel.findById(id).lean();
+    } catch (error) {
+      error.from = "DAO";
+      throw error;
+    }
   }
 
   async create(product) {
-    return await ProductModel.insertMany([product]);
+    try {
+      return await ProductModel.insertMany([product]);
+    } catch (error) {
+      error.from = "DAO";
+      throw error;
+    }
   }
 
   async update(id, product) {
-    return await ProductModel.updateOne({ _id: id }, product);
+    try {
+      return await ProductModel.updateOne({ _id: id }, product);
+    } catch (error) {
+      error.from = "DAO";
+      throw error;
+    }
   }
 
   async delete(id) {
-    return await ProductModel.findByIdAndDelete(id);
+    try {
+      return await ProductModel.findByIdAndDelete(id);
+    } catch (error) {
+      error.from = "DAO";
+      throw error;
+    }
   }
 }

@@ -17,21 +17,41 @@ export default class CartDAO {
   }
 
   async create() {
-    return await CartModel.create({ products: [] });
+    try {
+      return await CartModel.create({ products: [] });
+    } catch (error) {
+      error.from = "DAO";
+      throw error;
+    }
   }
 
   async update(id, product) {
-    return await CartModel.findByIdAndUpdate(
-      { _id: id },
-      { products: product }
-    );
+    try {
+      return await CartModel.findByIdAndUpdate(
+        { _id: id },
+        { products: product }
+      );
+    } catch (error) {
+      error.from = "DAO";
+      throw error;
+    }
   }
 
   async delete(id) {
-    return await CartModel.findByIdAndDelete(id);
+    try {
+      return await CartModel.findByIdAndDelete(id);
+    } catch (error) {
+      error.from = "DAO";
+      throw error;
+    }
   }
 
   async save() {
-    return await CartModel.save();
+    try {
+      return await CartModel.save();
+    } catch (error) {
+      error.from = "DAO";
+      throw error;
+    }
   }
 }
