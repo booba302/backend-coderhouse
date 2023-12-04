@@ -14,8 +14,9 @@ export const valUser = async (email, password) => {
     if (!user) return false;
     const validPassword = bcrypt.compareSync(password, user.password);
     return validPassword ? user : false;
-  } catch (e) {
-    console.log("first");
+  } catch (error) {
+    error.from = error.from || "SERVICE";
+    throw error;
   }
 };
 
@@ -28,13 +29,9 @@ export const getUserById = async (id) => {
       msg: "Usuario encontrado",
       user: user,
     };
-  } catch (e) {
-    return {
-      code: 400,
-      error: true,
-      msg: "Usuario no encontrado",
-      info: e,
-    };
+  } catch (error) {
+    error.from = error.from || "SERVICE";
+    throw error;
   }
 };
 
@@ -55,13 +52,9 @@ export const getUserByEmail = async (email) => {
         user: user,
       };
     }
-  } catch (e) {
-    return {
-      code: 400,
-      error: true,
-      msg: "Usuario no encontrado",
-      info: e,
-    };
+  } catch (error) {
+    error.from = error.from || "SERVICE";
+    throw error;
   }
 };
 
@@ -95,10 +88,8 @@ export const recoverPassword = async (email) => {
       link: link,
     };
   } catch (error) {
-    return {
-      code: 400,
-      error: true,
-    };
+    error.from = error.from || "SERVICE";
+    throw error;
   }
 };
 
@@ -114,32 +105,33 @@ export const addUser = async (user) => {
       msg: "Usuario creado satisfactoriamente",
       user: newUser,
     };
-  } catch (e) {
-    return {
-      code: 400,
-      error: true,
-      msg: "Ocurrió un error al agregar el usuario",
-      info: e,
-    };
+  } catch (error) {
+    error.from = error.from || "SERVICE";
+    throw error;
   }
 };
 
 export const updateUser = async (id, user) => {
-  let users = await userDAO.findById(id);
-  if (users) {
-    const userData = users._doc;
-    const newUser = {
-      ...userData,
-      ...user,
-    };
-    await userDAO.update(id, newUser);
-    users = await userDAO.findById(id);
-    return {
-      code: 201,
-      error: false,
-      msg: `Usuario actualizado`,
-      user: users,
-    };
+  try {
+    let users = await userDAO.findById(id);
+    if (users) {
+      const userData = users._doc;
+      const newUser = {
+        ...userData,
+        ...user,
+      };
+      await userDAO.update(id, newUser);
+      users = await userDAO.findById(id);
+      return {
+        code: 201,
+        error: false,
+        msg: `Usuario actualizado`,
+        user: users,
+      };
+    }
+  } catch (error) {
+    error.from = error.from || "SERVICE";
+    throw error;
   }
 };
 
@@ -174,13 +166,9 @@ export const resetPassword = async (id, token, password) => {
       error: false,
       msg: `Contraseña actualizada`,
     };
-  } catch (e) {
-    return {
-      code: 400,
-      error: true,
-      msg: "Ocurrió un error al actualizar el usuario",
-      info: e,
-    };
+  } catch (error) {
+    error.from = error.from || "SERVICE";
+    throw error;
   }
 };
 
@@ -196,5 +184,8 @@ export const premiumUser = async (id) => {
         user: userUpdated,
       };
     }
-  } catch (error) {}
+  } catch (error) {
+    error.from = error.from || "SERVICE";
+    throw error;
+  }
 };

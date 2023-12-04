@@ -18,7 +18,7 @@ export const GETCartById = async (req, res, next) => {
   const { id } = req.params;
   try {
     const cart = await CartService.getCartsById(id);
-    if (!cart) return CustomErrors.create(ERROR_DICTIONARY.notFound);
+    if (!cart) return CustomErrors.create(ERROR_DICTIONARY.default);
     res.status(cart.code).send(cart);
   } catch (error) {
     error.from = error.from || "CONTROLLER";

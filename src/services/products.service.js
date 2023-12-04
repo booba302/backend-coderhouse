@@ -3,14 +3,6 @@ import dao from "../dao/factory.js";
 const { Product } = dao;
 const productDAO = new Product();
 
-import CustomErrors from "../utils/customErrors.js";
-import enumError from "../utils/enumError.js";
-import {
-  newProductError,
-  getProductError,
-  getProductsError,
-} from "../utils/generateError.js";
-
 export const getProducts = async () => {
   try {
     const products = await productDAO.find();
@@ -20,13 +12,9 @@ export const getProducts = async () => {
       msg: "Productos encontrados",
       products: products,
     };
-  } catch (e) {
-    CustomErrors.createError({
-      message: "CANNOT GET PRODUCTS",
-      cause: getProductsError(),
-      name: "Get products error",
-      code: enumError.DATABASE_ERROR,
-    });
+  } catch (error) {
+    error.from = error.from || "SERVICE";
+    throw error;
   }
 };
 
@@ -39,18 +27,14 @@ export const getFilteredProducts = async (limit, page, filter, order) => {
       msg: "Productos encontrados",
       products: products,
     };
-  } catch (e) {
-    CustomErrors.createError({
-      message: "CANNOT GET PRODUCTS",
-      cause: getProductsError(),
-      name: "Get products error",
-      code: enumError.DATABASE_ERROR,
-    });
+  } catch (error) {
+    error.from = error.from || "SERVICE";
+    throw error;
   }
 };
 
 export const getProductById = async (id) => {
-  /* try {
+  try {
     const product = await productDAO.findById(id);
     return {
       code: 200,
@@ -58,14 +42,10 @@ export const getProductById = async (id) => {
       msg: `Producto con id ${id} encontrado`,
       product: product,
     };
-  } catch (e) {
-    return {
-      code: 400,
-      error: true,
-      msg: "Ocurrió un error al hacer la búsqueda",
-      info: e,
-    };
-  } */
+  } catch (error) {
+    error.from = error.from || "SERVICE";
+    throw error;
+  }
 };
 
 export const addProduct = async (product) => {
@@ -77,13 +57,9 @@ export const addProduct = async (product) => {
       msg: "Producto creado satisfactoriamente",
       product: newProduct,
     };
-  } catch (e) {
-    CustomErrors.createError({
-      message: "CANNOT CREATE PRODUCT",
-      cause: newProductError(product),
-      name: "Product Error",
-      code: enumError.USER_INPUT_ERROR,
-    });
+  } catch (error) {
+    error.from = error.from || "SERVICE";
+    throw error;
   }
 };
 
@@ -105,13 +81,9 @@ export const updateProduct = async (id, product) => {
         product: products,
       };
     }
-  } catch (e) {
-    return {
-      code: 400,
-      error: true,
-      msg: "Ocurrió un error al actualizar el producto",
-      info: e,
-    };
+  } catch (error) {
+    error.from = error.from || "SERVICE";
+    throw error;
   }
 };
 
@@ -124,12 +96,8 @@ export const deleteProduct = async (id) => {
       msg: "Producto eliminado satisfactoriamente",
       product: delProduct,
     };
-  } catch (e) {
-    return {
-      code: 400,
-      error: true,
-      msg: "Ocurrió un error al eliminar el producto",
-      info: e,
-    };
+  } catch (error) {
+    error.from = error.from || "SERVICE";
+    throw error;
   }
 };

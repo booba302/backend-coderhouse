@@ -8,7 +8,12 @@ export default class CartDAO {
   }
 
   async findById(id) {
-    return await CartModel.findById(id).populate("products.product").lean();
+    try {
+      return await CartModel.findById(id).lean();
+    } catch (error) {
+      error.from = "DAO";
+      throw error;
+    }
   }
 
   async create() {

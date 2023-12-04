@@ -48,12 +48,8 @@ export const getPurchase = async (id, email, products) => {
         noStock: failedProduct,
       };
     }
-  } catch (e) {
-    return {
-      code: 400,
-      error: true,
-      msg: "Ocurrió un error al crear el ticket",
-      info: e,
-    };
+  } catch (error) {
+    error.from = error.from || "SERVICE";
+    throw error;
   }
 };

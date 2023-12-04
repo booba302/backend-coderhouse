@@ -7,38 +7,46 @@ const productDAO = new Product();
 export const getCarts = async () => {
   try {
     const carts = await cartDAO.find();
-    return {
-      code: 200,
-      error: false,
-      msg: "Carritos encontrados",
-      cart: carts,
-    };
-  } catch (e) {
-    return {
-      code: 400,
-      error: true,
-      msg: "Carritos no encontrados",
-      info: e,
-    };
+    if (!carts) {
+      return {
+        code: 201,
+        error: true,
+        msg: "Carritos no encontrados",
+      }
+    } else {
+      return {
+        code: 200,
+        error: false,
+        msg: "Carritos encontrados",
+        cart: carts,
+      }
+    }
+  } catch (error) {
+    error.from = error.from || "SERVICE";
+    throw error;
   }
 };
 
 export const getCartsById = async (id) => {
   try {
     const cart = await cartDAO.findById(id);
-    return {
-      code: 200,
-      error: false,
-      msg: "Carritos encontrados",
-      cart: cart,
-    };
-  } catch (e) {
-    return {
-      code: 400,
-      error: true,
-      msg: "Ocurrió un error al hacer la búsqueda",
-      info: e,
-    };
+    if (!cart) {
+      return {
+        code: 201,
+        error: true,
+        msg: "Carrito no encontrado",
+      }
+    } else {
+      return {
+        code: 200,
+        error: false,
+        msg: "Carritos encontrados",
+        cart: cart,
+      }
+    }
+  } catch (error) {
+    error.from = error.from || "SERVICE";
+    throw error;
   }
 };
 
@@ -51,13 +59,9 @@ export const addCart = async () => {
       msg: "Carrito creado satisfactoriamente",
       cart: newCart,
     };
-  } catch (e) {
-    return {
-      code: 400,
-      error: true,
-      msg: "Ocurrió un error al agregar el carrito",
-      info: e,
-    };
+  } catch (error) {
+    error.from = error.from || "SERVICE";
+    throw error;
   }
 };
 
@@ -96,13 +100,9 @@ export const addProductToCart = async (idCart, idProd) => {
       msg: `Se agrego ${idProd} al carrito ${idCart}`,
       cart: findCart,
     };
-  } catch (e) {
-    return {
-      code: 400,
-      error: true,
-      msg: "Ocurrió un error al agregar un producto al carrito",
-      info: e,
-    };
+  } catch (error) {
+    error.from = error.from || "SERVICE";
+    throw error;
   }
 };
 
@@ -117,13 +117,9 @@ export const updateCart = async (id, product) => {
       msg: `Carrito actualizado`,
       product: findCart,
     };
-  } catch (e) {
-    return {
-      code: 400,
-      error: true,
-      msg: "Ocurrió un error al actualizar el carrito",
-      info: e,
-    };
+  } catch (error) {
+    error.from = error.from || "SERVICE";
+    throw error;
   }
 };
 
@@ -149,13 +145,9 @@ export const updateQtyInCart = async (idCart, idProd, quantity) => {
         msg: `Producto no encontrado en el carrito`,
       };
     }
-  } catch (e) {
-    return {
-      code: 400,
-      error: true,
-      msg: "Ocurrió un error al actualizar el carrito",
-      info: e,
-    };
+  } catch (error) {
+    error.from = error.from || "SERVICE";
+    throw error;
   }
 };
 
@@ -168,13 +160,9 @@ export const delCart = async (id) => {
       msg: "Carrito eliminado",
       product: cart,
     };
-  } catch (e) {
-    return {
-      code: 400,
-      error: true,
-      msg: "Ocurrió un error al eliminar el carrito",
-      info: e,
-    };
+  } catch (error) {
+    error.from = error.from || "SERVICE";
+    throw error;
   }
 };
 
@@ -200,13 +188,9 @@ export const delProductInCart = async (idCart, idProd) => {
       msg: `Se eliminó ${idProd} del carrito ${idCart}`,
       cart: findCart,
     };
-  } catch (e) {
-    return {
-      code: 400,
-      error: true,
-      msg: "Ocurrió un error al eliminar el producto del carrito",
-      info: e,
-    };
+  } catch (error) {
+    error.from = error.from || "SERVICE";
+    throw error;
   }
 };
 
@@ -221,12 +205,8 @@ export const emptyCart = async (id) => {
       msg: `Se limpió el carrito ${id}`,
       cart: findCart,
     };
-  } catch (e) {
-    return {
-      code: 400,
-      error: true,
-      msg: "Ocurrió un error al limpiar el carrito",
-      info: e,
-    };
+  } catch (error) {
+    error.from = error.from || "SERVICE";
+    throw error;
   }
 };
