@@ -11,7 +11,8 @@
     "image-prod": "docker build -t api-great-henge-prod .",
     "image-dev": "docker build -t api-great-henge-dev .",
     "container-prod": "docker run -p 9999:8080 api-great-henge-prod",
-    "container-dev": "docker run -p 8888:8080 api-great-henge-dev"
+    "container-dev": "docker run -p 8888:8080 api-great-henge-dev",
+    "super": "mocha ./test/supertest/"
   },
   "keywords": [],
   "author": "",
@@ -43,6 +44,9 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.1.0"
+    "@faker-js/faker": "^8.1.0",
+    "chai": "^4.3.10",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
   }
 }
