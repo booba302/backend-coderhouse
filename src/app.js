@@ -7,7 +7,8 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
 import methodOverride from "method-override";
-import cors from "cors";
+import swaggerJSDoc from "swagger-jsdoc";
+import { serve, setup } from "swagger-ui-express";
 
 import authRouter from "./routers/auth.router.js";
 import cartRouter from "./routers/cart.router.js";
@@ -20,6 +21,7 @@ import ticketRouter from "./routers/ticket.router.js";
 import __dirname from "./config/dirname.js";
 import InitPassport from "./config/passport.config.js";
 import config from "./config/config.js";
+import options from "./config/swagger.js";
 
 import { socketConnection } from "./controllers/socket.controller.js";
 import ErrorHandlerMiddleware from "./utils/error.middleware.js";
@@ -34,6 +36,8 @@ app.use((req, res, next) => {
   req.io = io;
   next();
 });
+
+const specs = swaggerJSDoc(options);
 
 app.engine("handlebars", handlebars.engine());
 app.set("views", `${__dirname}/../views`);
@@ -62,6 +66,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(express.static(`${__dirname}/../public`));
+
+app.use("/api/docs", serve, setup(specs));
 
 app.use("/", viewRouter);
 app.use("/api/auth", authRouter);

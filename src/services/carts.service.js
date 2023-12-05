@@ -12,14 +12,14 @@ export const getCarts = async () => {
         code: 201,
         error: true,
         msg: "Carritos no encontrados",
-      }
+      };
     } else {
       return {
         code: 200,
         error: false,
         msg: "Carritos encontrados",
         cart: carts,
-      }
+      };
     }
   } catch (error) {
     error.from = error.from || "SERVICE";
@@ -35,14 +35,14 @@ export const getCartsById = async (id) => {
         code: 201,
         error: true,
         msg: "Carrito no encontrado",
-      }
+      };
     } else {
       return {
         code: 200,
         error: false,
         msg: "Carritos encontrados",
         cart: cart,
-      }
+      };
     }
   } catch (error) {
     error.from = error.from || "SERVICE";

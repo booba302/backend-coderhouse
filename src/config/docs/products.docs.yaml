@@ -1,0 +1,34 @@
+components:
+  schemas:
+    product:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: Descripción del producto
+        price:
+          type: number
+          description: Precio del producto
+        thumbnail:
+          type: string
+          description: URL de la imagen del producto
+        code:
+          type: string
+          description: Código único del producto
+        stock:
+          type: string
+          description: Cantidad disponible del producto
+        category:
+          type: string
+          description: Categoría del producto
+      required:
+        - title
+        - description
+        - price
+        - thumbnail
+        - code
+        - stock
+        - category
