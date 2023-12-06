@@ -16,12 +16,6 @@ const transport = nodemailer.createTransport({
   },
 });
 
-export const GETLogout = (req, res, next) => {
-  req.session.destroy((er) => {
-    res.send("Se ha cerrado la sesión correctamente");
-  });
-};
-
 export const GETCurrent = (req, res, next) => {
   const user = req.user;
   if (!user) return res.send("No existe usuario loggeado");

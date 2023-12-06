@@ -28,10 +28,13 @@ authRouter
   .post(
     "/register",
     passport.authenticate("register", {
-      successRedirect: "/products",
       failureRedirect: "/register",
     }),
-    async (req, res) => {}
+    async (req, res) => {
+      const user = req.user;
+      console.log(user);
+      res.send(user);
+    }
   );
 
 export default authRouter;

@@ -5,11 +5,30 @@ import CustomErrors from "../utils/customErrors.js";
 import ERROR_DICTIONARY from "../config/errorDictionary.js";
 
 export const GETIndex = async (req, res) => {
-  res.render("index");
+  const roles = { notLogged: true };
+  res.render("index", { roles });
 };
 
 export const GETLogin = async (req, res) => {
-  res.render("login");
+  const roles = { notLogged: true };
+  res.render("login", { roles });
+};
+
+export const GETPasswordRecovery = async (req, res) => {
+  const roles = { notLogged: true };
+  res.render("recoverPassword", { roles });
+};
+
+export const GETRegister = async (req, res) => {
+  const roles = { notLogged: true };
+  res.render("register", { roles });
+};
+
+export const GETLogout = (req, res, next) => {
+  const roles = { notLogged: true };
+  req.session.destroy((er) => {
+    res.render("logout", { roles });
+  });
 };
 
 export const GETProductsView = async (req, res) => {
@@ -18,6 +37,13 @@ export const GETProductsView = async (req, res) => {
   if (req.user) {
     const { name, lastname, email, role, cart } = req.user;
     roles = { [role]: true };
+    if (role === "premium") {
+      products.products.map((prod) => {
+        if (prod.owner.email === req.user.email) {
+          prod.owned = true;
+        }
+      });
+    }
     res.render("products", {
       products,
       roles,
@@ -55,14 +81,6 @@ export const GETCarts = async (req, res) => {
     products.total = total.toFixed(2);
   }
   res.render("cart", { idCart, products });
-};
-
-export const GETRegister = async (req, res) => {
-  res.render("register");
-};
-
-export const GETPasswordRecovery = async (req, res) => {
-  res.render("recoverPassword");
 };
 
 export const GETResetPassword = async (req, res) => {

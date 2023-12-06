@@ -7,10 +7,11 @@ const viewRouter = Router();
 viewRouter
   .get("/", ViewController.GETIndex)
   .get("/login", logged, ViewController.GETLogin)
+  .get("/logout", notLogged, ViewController.GETLogout)
   .get("/register", logged, ViewController.GETRegister)
   .get("/recoverpassword", logged, ViewController.GETPasswordRecovery)
   .get("/resetpassword", logged, ViewController.GETResetPassword)
-  .get("/products", notLogged, ViewController.GETProductsView)
+  .get("/products", ViewController.GETProductsView)
   .get("/products/new", notLogged, ViewController.GETNewProducts)
   .get("/product/edit/:id", notLogged, ViewController.GETEditProduct)
   .get("/carts/:idCart", notLogged, ViewController.GETCarts)

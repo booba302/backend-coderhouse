@@ -16,7 +16,69 @@
     ></script>
   </head>
   <body>
-    <h1 class="text-center title">Bienvenidos a The Great Henge</h1>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">The Great Henge</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" href="/products">Productos</a>
+            </li>
+            {{#if roles.notLogged}}
+              <li class="nav-item">
+                <a class="nav-link active" href="/register">Registrate</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="/login">Inicia Sesión</a>
+              </li>
+            {{/if}}            
+            {{#if roles.user}}
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  href="/carts/{{cart._id}}"
+                >Carrito</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="/api/users/prem">Premium</a>
+              </li>
+            {{/if}}
+            {{#if roles.premium}}
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  href="/carts/{{cart._id}}"
+                >Carrito</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="/products/new">Nuevo Producto</a>
+              </li>
+            {{/if}}
+            {{#if roles.admin}}
+              <li class="nav-item">
+                <a class="nav-link active" href="/products/new">Nuevo Producto</a>
+              </li>
+            {{/if}}
+            {{#unless roles.notLogged}}
+              <li class="nav-item">
+                <a class="nav-link active" href="/logout">Cerrar sesión</a>
+              </li>
+            {{/unless}}
+          </ul>
+        </div>
+      </div>
+    </nav>
     {{{body}}}
   </body>
   <script

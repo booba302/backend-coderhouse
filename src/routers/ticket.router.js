@@ -5,6 +5,6 @@ import { isAdmin } from "../utils/secure.middleware.js";
 
 const ticketRouter = Router();
 
-ticketRouter.post("/:id", isAdmin, TicketController.GETPurchase);
+ticketRouter.post("/:id", isAdmin, TicketController.POSTPurchase);
 
 export default ticketRouter;

@@ -52,7 +52,7 @@ export default class UserDAO {
     try {
       return await UserModel.findByIdAndDelete(id);
     } catch (error) {
-      error.from = "DAO";
+      error.from = "DAOs";
       throw error;
     }
   }

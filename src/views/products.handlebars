@@ -1,57 +1,4 @@
 <div>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/">The Great Henge</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" href="/products">Productos</a>
-          </li>
-          {{#if roles.notLogged}}
-            <li class="nav-item">
-              <a class="nav-link active" href="/register">Registrate</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="/login">Inicia Sesión</a>
-            </li>
-          {{/if}}
-          {{#if roles.user}}
-            <li class="nav-item">
-              <a class="nav-link active" href="/api/users/prem">Premium</a>
-            </li>
-          {{/if}}
-          {{#unless roles.admin}}
-            {{#unless roles.notLogged}}
-              <li class="nav-item">
-                <a class="nav-link active" href="/carts/{{cart._id}}">Carrito</a>
-              </li>
-            {{/unless}}
-          {{/unless}}
-          {{#unless roles.user}}
-            {{#unless roles.notLogged}}
-              <li class="nav-item">
-                <a class="nav-link active" href="/products/new">Nuevo Producto</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" href="/login">Modificar Producto</a>
-              </li>
-            {{/unless}}
-          {{/unless}}
-        </ul>
-      </div>
-    </div>
-  </nav>
   {{#unless roles.notLogged}}
     <div style="margin-bottom: 50px;">
       <h1>Bienvenido</h1>
@@ -84,30 +31,35 @@
           <td scope="col"> {{this.code}} </td>
           <td scope="col"> {{this.stock}} </td>
           <td scope="col"> {{this.category}} </td>
-          <td scope="col">
-            <form id="addToCart{{this._id}}" action="/api/carts/{{../cart._id}}/product/{{this._id}}" method="post">
-              <a onclick="document.getElementById('addToCart{{this._id}}').submit();" class="btn btn-primary">Agregar al carrito</a>
-            </form>
-            
-            <a
-              href="/product/edit/{{this._id}}"
-              class="btn btn-secondary"
-            >Editar producto</a>
+          <td scope="col"> 
+            {{#if ../roles.admin}}
+              <a
+                href="/product/edit/{{this._id}}"
+                class="btn btn-secondary"
+              >Editar producto</a>
+            {{/if}}
+            {{#if ../roles.premium}}
+              {{#if this.owned}}
+                <a
+                  href="/product/edit/{{this._id}}"
+                  class="btn btn-secondary"
+                >Editar producto</a>
+              {{/if}}
+              {{#unless this.owned}}
+                <form id="addToCart{{this._id}}" action="/api/carts/{{../cart._id}}/product/{{this._id}}" method="post">
+                  <a onclick="document.getElementById('addToCart{{this._id}}').submit();" class="btn btn-primary">Agregar al carrito</a>
+                </form>
+              {{/unless}}              
+            {{/if}}
+            {{#if ../roles.user}}
+              <form id="addToCart{{this._id}}" action="/api/carts/{{../cart._id}}/product/{{this._id}}" method="post">
+                <a onclick="document.getElementById('addToCart{{this._id}}').submit();" class="btn btn-primary">Agregar al carrito</a>
+              </form>
+            {{/if}}
           </td>
         </tr>
       {{/each}}
     </tbody>
   </table>
 </div>
-{{#unless roles.notLogged}}
-  <div>
-    <form action="/api/users/logout" method="GET">
-      <input
-        class="btn btn-primary btn-block mb-4"
-        type="submit"
-        value="Cerrar Sesión"
-      />
-    </form>
-  </div>
-{{/unless}}
 <script src="./js/cart.js"></script>
