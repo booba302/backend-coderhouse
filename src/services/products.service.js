@@ -6,12 +6,20 @@ const productDAO = new Product();
 export const getProducts = async () => {
   try {
     const products = await productDAO.find();
-    return {
-      code: 200,
-      error: false,
-      msg: "Productos encontrados",
-      products: products,
-    };
+    if (!products) {
+      return {
+        code: 404,
+        error: true,
+        msg: "Productos no encontrados",
+      };
+    } else {
+      return {
+        code: 200,
+        error: false,
+        msg: "Productos encontrados",
+        products: products,
+      };
+    }
   } catch (error) {
     error.from = error.from || "SERVICE";
     throw error;
@@ -21,12 +29,20 @@ export const getProducts = async () => {
 export const getFilteredProducts = async (limit, page, filter, order) => {
   try {
     const products = await productDAO.findFiltered(limit, page, filter, order);
-    return {
-      code: 200,
-      error: false,
-      msg: "Productos encontrados",
-      products: products,
-    };
+    if (!products) {
+      return {
+        code: 404,
+        error: true,
+        msg: "Productos no encontrados",
+      };
+    } else {
+      return {
+        code: 200,
+        error: false,
+        msg: "Productos encontrados",
+        products: products,
+      };
+    }
   } catch (error) {
     error.from = error.from || "SERVICE";
     throw error;
@@ -36,12 +52,20 @@ export const getFilteredProducts = async (limit, page, filter, order) => {
 export const getProductById = async (id) => {
   try {
     const product = await productDAO.findById(id);
-    return {
-      code: 200,
-      error: false,
-      msg: `Producto con id ${id} encontrado`,
-      product: product,
-    };
+    if (!product) {
+      return {
+        code: 404,
+        error: true,
+        msg: `Producto con id ${id} no encontrado`,
+      };
+    } else {
+      return {
+        code: 200,
+        error: false,
+        msg: `Producto con id ${id} encontrado`,
+        product: product,
+      };
+    }
   } catch (error) {
     error.from = error.from || "SERVICE";
     throw error;
@@ -66,7 +90,13 @@ export const addProduct = async (product) => {
 export const updateProduct = async (id, product) => {
   try {
     let products = await productDAO.findById(id);
-    if (products) {
+    if (!products) {
+      return {
+        code: 404,
+        error: true,
+        msg: `Producto con id ${id} no encontrado`,
+      };
+    } else {
       const productData = products._doc;
       const newProduct = {
         ...productData,
@@ -90,12 +120,20 @@ export const updateProduct = async (id, product) => {
 export const deleteProduct = async (id) => {
   try {
     const delProduct = productDAO.delete(id);
-    return {
-      code: 200,
-      error: false,
-      msg: "Producto eliminado satisfactoriamente",
-      product: delProduct,
-    };
+    if (!delProduct) {
+      return {
+        code: 404,
+        error: true,
+        msg: `Producto con id ${id} no encontrado`,
+      };
+    } else {
+      return {
+        code: 200,
+        error: false,
+        msg: `Producto eliminado con éxito`,
+        product: delProduct,
+      };
+    }
   } catch (error) {
     error.from = error.from || "SERVICE";
     throw error;

@@ -9,7 +9,7 @@ export const getCarts = async () => {
     const carts = await cartDAO.find();
     if (!carts) {
       return {
-        code: 201,
+        code: 404,
         error: true,
         msg: "Carritos no encontrados",
       };
@@ -32,7 +32,7 @@ export const getCartsById = async (id) => {
     const cart = await cartDAO.findById(id);
     if (!cart) {
       return {
-        code: 201,
+        code: 404,
         error: true,
         msg: "Carrito no encontrado",
       };
@@ -40,7 +40,7 @@ export const getCartsById = async (id) => {
       return {
         code: 200,
         error: false,
-        msg: "Carritos encontrados",
+        msg: "Carrito encontrado",
         cart: cart,
       };
     }
@@ -109,14 +109,22 @@ export const addProductToCart = async (idCart, idProd) => {
 export const updateCart = async (id, product) => {
   try {
     let findCart = await cartDAO.findById(id);
-    await cartDAO.update(id, product);
-    findCart = await cartDAO.findById(id);
-    return {
-      code: 201,
-      error: false,
-      msg: `Carrito actualizado`,
-      product: findCart,
-    };
+    if (!findCart) {
+      return {
+        code: 404,
+        error: true,
+        msg: `Carrito no encontrado`,
+      };
+    } else {
+      await cartDAO.update(id, product);
+      findCart = await cartDAO.findById(id);
+      return {
+        code: 201,
+        error: false,
+        msg: `Carrito actualizado`,
+        product: findCart,
+      };
+    }
   } catch (error) {
     error.from = error.from || "SERVICE";
     throw error;
@@ -154,12 +162,20 @@ export const updateQtyInCart = async (idCart, idProd, quantity) => {
 export const delCart = async (id) => {
   try {
     const cart = await cartDAO.delete(id);
-    return {
-      code: 200,
-      error: false,
-      msg: "Carrito eliminado",
-      product: cart,
-    };
+    if (!cart) {
+      return {
+        code: 404,
+        error: true,
+        msg: `Carrito no encontrado`,
+      };
+    } else {
+      return {
+        code: 200,
+        error: false,
+        msg: "Carrito eliminado",
+        product: cart,
+      };
+    }
   } catch (error) {
     error.from = error.from || "SERVICE";
     throw error;

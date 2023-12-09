@@ -3,9 +3,9 @@ components:
     product:
       type: object
       properties:
-        title:
+        name:
           type: string
-          description: Nombre del producto
+          description: Título del producto
         description:
           type: string
           description: Descripción del producto
@@ -19,8 +19,8 @@ components:
           type: string
           description: Código único del producto
         stock:
-          type: string
-          description: Cantidad disponible del producto
+          type: number
+          description: Cantidad en stock del producto
         category:
           type: string
           description: Categoría del producto
@@ -32,3 +32,345 @@ components:
         - code
         - stock
         - category
+
+  responses:
+    registerProduct:
+      description: Respuesta al crear un producto
+      type: object
+      properties:
+        code:
+          type: number
+          description: Código de estado de la solicitud
+        error:
+          type: boolean
+          description: Estado de la solicitud
+        msg:
+          type: string
+          description: Mensaje de respuesta
+        product:
+          $ref: "#/components/schemas/product"
+      example:
+        code: 201
+        error: false
+        message: "Producto creado satisfactoriamente"
+        product:
+          title: "Skrelv, Defector Mite"
+          description: "Toxic 1 (Players dealt combat damage by this creature also get a poison counter.)"
+          price: 4.11
+          thumbnail: "https://cards.scryfall.io/png/front/6/0/60b565da-a49b-479c-b0c4-8ff3dd20cc0b.png?1675956933"
+          code: "TfhRrJvImSIiFllquKs4"
+          stock: 3
+          category: white
+    productList:
+      description: Respuesta al solicitar una lista de productos
+      type: object
+      properties:
+        code:
+          type: number
+          description: Código de estado de la solicitud
+        error:
+          type: boolean
+          description: Estado de la solicitud
+        msg:
+          type: string
+          description: Mensaje de respuesta
+        products:          
+          type: object
+          description: Objeto con la data de los productos        
+      example:
+        code: 200
+        error: false
+        msg: "Productos encontrados"
+        products:
+          docs:
+            _id: "64dbd0afa30dd5cce4dec128"
+            title: "Rhuk, Hexgold Nabber"
+            description: "Trample, haste. Whenever an equipped creature you control other than Rhuk, Hexgold Nabber attacks or dies, you may attach all Equipment attached to that creature to Rhuk."
+            price: 0.18
+            thumbnail: "https://cards.scryfall.io/png/front/d/7/d7c25806-1da6-4789-a17e-d2440184ec40.png?1675957444"
+            code: "RI08yq65qyorEQkbOI6P"
+            stock: 20
+            owner: "6568c98663e5bbf216c48c41"
+          totalDocs: 20
+          limit: 10
+          totalPages: 2
+          page: 1
+          pagingCounter: 1
+          hasPrevPage: false
+          hasNextPage: true
+          prevPage: null
+          nextPage: 2
+  errorResponses:
+    notFound:
+      description: Respuesta cuando no se encuentra el producto
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code: 404
+              error:
+                type: boolean
+                description: Estado de la solicitud
+              msg:
+                type: string
+                description: Descripción del error
+            example:
+              code: 404
+              error: true
+              msg: "Producto no encontrado"
+    handler:
+      description: Respuesta de error interno del servidor
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: boolean
+                description: Estado de la solicitud
+              message:
+                type: string
+                description: Descripción del error
+            example:
+              error: true
+              message: "Error interno del servidor"
+
+paths:
+  /api/products:
+    post:
+      summary: Crear un nuevo producto
+      tags:
+        - Products
+      requestBody:
+        required: true
+        description: Objeto con las propiedades del producto
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/product"
+      responses:
+        "201":
+          description: El producto se ha creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/registerProduct"
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/errorResponses/handler"
+
+    get:
+      summary: Obtener una lista de todos los productos
+      tags:
+        - Products
+      parameters:
+        - name: limit
+          in: query
+          description: Cantidad máxima de productos a devolver
+          required: false
+          schema:
+            type: integer
+        - name: page
+          in: query
+          description: Número de página
+          required: false
+          schema:
+            type: integer
+        - name: sort
+          in: query
+          description: Ordenar productos por precio ascendente o descendente
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Lista de productos paginada obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/productList"
+              example:
+                code: 200
+                error: false
+                msg: "Productos encontrados"
+                products:
+                  docs:
+                    _id: "64dbd0afa30dd5cce4dec128"
+                    title: "Rhuk, Hexgold Nabber"
+                    description: "Trample, haste. Whenever an equipped creature you control other than Rhuk, Hexgold Nabber attacks or dies, you may attach all Equipment attached to that creature to Rhuk."
+                    price: 0.18
+                    thumbnail: "https://cards.scryfall.io/png/front/d/7/d7c25806-1da6-4789-a17e-d2440184ec40.png?1675957444"
+                    code: "RI08yq65qyorEQkbOI6P"
+                    stock: 20
+                    owner: "6568c98663e5bbf216c48c41"
+                  totalDocs: 20
+                  limit: 10
+                  totalPages: 2
+                  page: 1
+                  pagingCounter: 1
+                  hasPrevPage: false
+                  hasNextPage: true
+                  prevPage: null
+                  nextPage: 2
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/errorResponses/handler"
+
+  /api/products/{id}:
+    get:
+      summary: Obtener un producto por ID
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          description: ID del producto a buscar
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto encontrado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/product"
+              example:
+                code: 200
+                error: false
+                msg: "Producto con id {id} encontrado"
+                product:
+                  _id: "64dbd0afa30dd5cce4dec121"
+                  title: "Elesh Norn, Mother of Machines"
+                  description: "Vigilance. If a permanent entering the battlefield causes a triggered"
+                  price: 29.55
+                  thumbnail: "https://cards.scryfall.io/png/front/4/4/44dcab01-1d13-4dfc-ae2f-fbaa3dd35087.png?1675956896"
+                  code: "87QzYlEMryzmkbIKqTab"
+                  stock: 20
+                  category: "white"
+        "404":
+          description: Producto no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/errorResponses/notFound"
+              example:
+                code: 404,
+                error: true
+                msg: "Producto con id {id} no encontrado"
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/errorResponses/handler"
+
+    put:
+      summary: Actualizar un producto por ID
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          description: ID del producto a actualizar
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        description: Objeto con las propiedades actualizadas del producto
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/product"
+      responses:
+        "200":
+          description: Producto actualizado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/product"
+              example:
+                code: 200
+                error: false
+                msg: "Producto actualizado"
+                product:
+                  _id: "64dbd0afa30dd5cce4dec121"
+                  title: "Elesh Norn, Mother of Machines"
+                  description: "Vigilance. If a permanent entering the battlefield causes a triggered"
+                  price: 29.55
+                  thumbnail: "https://cards.scryfall.io/png/front/4/4/44dcab01-1d13-4dfc-ae2f-fbaa3dd35087.png?1675956896"
+                  code: "87QzYlEMryzmkbIKqTab"
+                  stock: 20
+                  category: "white"
+        "404":
+          description: Producto no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/errorResponses/notFound"
+              example:
+                code: 404,
+                error: true
+                msg: "Producto con id {id} no encontrado"
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/errorResponses/handler"
+
+    delete:
+      summary: Eliminar un producto por ID
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          description: ID del producto a eliminar
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto eliminado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/registerProduct"
+              example:
+                code: 200
+                error: false
+                msg: "Producto eliminado con éxito"
+                product:
+                  _id: "64dbd0afa30dd5cce4dec121"
+                  title: "Elesh Norn, Mother of Machines"
+                  description: "Vigilance. If a permanent entering the battlefield causes a triggered"
+                  price: 29.55
+                  thumbnail: "https://cards.scryfall.io/png/front/4/4/44dcab01-1d13-4dfc-ae2f-fbaa3dd35087.png?1675956896"
+                  code: "87QzYlEMryzmkbIKqTab"
+                  stock: 20
+                  category: "white"
+        "404":
+          description: Producto no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/errorResponses/notFound"
+              example:
+                code: 404,
+                error: true
+                msg: "Producto con id {id} no encontrado"
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/errorResponses/handler"

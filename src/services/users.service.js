@@ -162,7 +162,7 @@ export const resetPassword = async (id, token, password) => {
     await passwordResetToken.deleteOne();
 
     return {
-      code: 201,
+      code: 200,
       error: false,
       msg: `Contraseña actualizada`,
     };
@@ -178,7 +178,7 @@ export const premiumUser = async (id) => {
     if (user) {
       const userUpdated = await userDAO.update(id, { role: "premium" });
       return {
-        code: 201,
+        code: 200,
         error: false,
         msg: `Usuario actualizado`,
         user: userUpdated,

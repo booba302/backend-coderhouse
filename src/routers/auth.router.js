@@ -32,7 +32,6 @@ authRouter
     }),
     async (req, res) => {
       const user = req.user;
-      console.log(user);
       res.send(user);
     }
   );
