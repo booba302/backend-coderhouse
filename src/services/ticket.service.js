@@ -36,7 +36,7 @@ export const getPurchase = async (id, email, products) => {
       await cartDAO.update(id, failedProduct);
 
       return {
-        code: 200,
+        code: 201,
         msg: "Ticket creado",
         ticket: ticket,
         noStock: failedProduct,
