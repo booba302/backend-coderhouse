@@ -11,7 +11,7 @@ cartRouter
   .post("/:idCart/product/:idProd", CartController.POSTProductToCart)
   .put("/:idCart", isAdmin, CartController.PUTCart)
   .put("/:idCart/product/:idProd", CartController.PUTQuantityInCart)
-  .delete("/:idCart", isAdmin, CartController.DELETEEmptyCart)
+  .delete("/:idCart", CartController.DELETECart)
   .delete("/:idCart/product/:idProd", CartController.DELETEProductInCart);
 
 export default cartRouter;

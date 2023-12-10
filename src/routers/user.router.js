@@ -9,6 +9,7 @@ userRouter
   .get("/prem", UserController.GETPremiumUser)
   .get("/:id", UserController.GETUserById)
   .post("/recoverpassword", UserController.POSTRecoverPassword)
-  .post("/resetpassword/:id/:token", UserController.POSTResetPassword);
+  .post("/resetpassword/:id/:token", UserController.POSTResetPassword)
+  .delete("/:id", UserController.DELETEUser);
 
 export default userRouter;

@@ -189,3 +189,18 @@ export const premiumUser = async (id) => {
     throw error;
   }
 };
+
+export const deleteUser = async (id) => {
+  try {
+    const user = await userDAO.delete(id);
+    return {
+      code: 200,
+      error: false,
+      msg: "Usuario Eliminado",
+      user: user,
+    };
+  } catch (error) {
+    error.from = error.from || "SERVICE";
+    throw error;
+  }
+};

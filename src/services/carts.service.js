@@ -173,7 +173,7 @@ export const delCart = async (id) => {
         code: 200,
         error: false,
         msg: "Carrito eliminado",
-        product: cart,
+        cart: cart,
       };
     }
   } catch (error) {

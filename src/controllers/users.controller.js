@@ -83,3 +83,15 @@ export const GETPremiumUser = async (req, res, next) => {
     next(error);
   }
 };
+
+export const DELETEUser = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const user = await UserServices.deleteUser(id);
+    if (!user) return CustomErrors.create(ERROR_DICTIONARY.default);
+    res.send(user);
+  } catch (error) {
+    error.from = error.from || "CONTROLLER";
+    next(error);
+  }
+};

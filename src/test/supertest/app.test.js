@@ -9,6 +9,7 @@ describe("Testing The Great Henge API resources", () => {
   describe("Testing User and Product data flow", () => {
     let uid = null;
     let pid = null;
+    let cid = null;
     let cookie = null;
     it("Testing User Register", async () => {
       let data = {
@@ -21,7 +22,9 @@ describe("Testing The Great Henge API resources", () => {
 
       let response = await requester.post("/auth/register").send(data);
       let { _body, statusCode } = response;
-      uid = _body.user._id;
+      let { _id, cart } = _body;
+      uid = _id;
+      cid = cart;
       expect(statusCode).to.be.equals(200);
     });
     it("Testing login", async () => {
@@ -40,8 +43,15 @@ describe("Testing The Great Henge API resources", () => {
       expect(cookie.name).to.be.equals("connect.sid");
       expect(cookie.value).to.be.ok;
     });
+    it("Deleting test cart", async () => {
+      let response = await requester.delete("/carts/" + cid);
+      let { statusCode } = response;
+      expect(statusCode).to.be.equals(200);
+    });
     it("Deleting test user", async () => {
-        let response = requester.delete("/")
-    })
+      let response = await requester.delete("/users/" + uid);
+      let { statusCode } = response;
+      expect(statusCode).to.be.equals(200);
+    });
   });
 });
