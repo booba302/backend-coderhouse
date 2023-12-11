@@ -46,7 +46,6 @@ const InitPassport = () => {
     new LocalStrategy(
       { passReqToCallback: true, usernameField: "email" },
       async (req, email, password, done) => {
-        console.log(email, password)
         try {
           const user = await UserServices.valUser(email, password);
           if (!user) {

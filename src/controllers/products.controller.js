@@ -55,6 +55,7 @@ export const POSTProduct = async (req, res, next) => {
 export const PUTProduct = async (req, res, next) => {
   const { id } = req.params;
   const body = req.body;
+  console.log(body);
   try {
     const product = await ProductService.updateProduct(id, body);
     if (!product) return CustomErrors.create(ERROR_DICTIONARY.default);

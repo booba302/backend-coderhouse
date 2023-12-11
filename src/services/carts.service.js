@@ -119,7 +119,7 @@ export const updateCart = async (id, product) => {
       await cartDAO.update(id, product);
       findCart = await cartDAO.findById(id);
       return {
-        code: 201,
+        code: 200,
         error: false,
         msg: `Carrito actualizado`,
         product: findCart,
