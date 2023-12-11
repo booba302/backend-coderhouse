@@ -10,7 +10,9 @@ describe("Testing The Great Henge API resources", () => {
     let uid = null;
     let pid = null;
     let cid = null;
+    let upid = null;
     let cookie = null;
+    let token = null;
     it("Testing User Register", async () => {
       let data = {
         name: "test",
@@ -27,6 +29,7 @@ describe("Testing The Great Henge API resources", () => {
       cid = cart;
       expect(statusCode).to.be.equals(200);
     });
+
     it("Testing login", async () => {
       let data = { email: "adminCoder@coder.com", password: "adminCod3r123" };
       let response = await requester.post("/auth/login").send(data);
@@ -35,10 +38,28 @@ describe("Testing The Great Henge API resources", () => {
         name: headers["set-cookie"][0].split("=")[0],
         value: headers["set-cookie"][0].split("=")[1],
       };
-      //console.log(cookie);
       expect(cookie.name).to.be.equals("connect.sid");
       expect(cookie.value).to.be.ok;
     });
+
+    it("Testing password recovery", async () => {
+      let data = { email: "booba@gmail.com" };
+      let response = await requester.post("/users/recoverpassword").send(data);
+      let { _body, statusCode } = response;
+      token = _body.token;
+      upid = _body.id;
+      expect(statusCode).to.be.equals(200);
+    });
+
+    it("Testing password update", async () => {
+      let data = { password: "12345678" };
+      let response = await requester
+        .post("/users/resetpassword/" + upid + "/" + token)
+        .send(data);
+      let { statusCode } = response;
+      expect(statusCode).to.be.equals(200);
+    });
+
     it("Testing get all products", async () => {
       let response = await requester
         .get("/products")
@@ -46,7 +67,8 @@ describe("Testing The Great Henge API resources", () => {
       let { _body } = response;
       const products = _body.products.docs;
       expect(Array.isArray(products)).to.be.equals(true);
-    });
+    });  
+
     it("Testing create product", async () => {
       let data = {
         title: "Test title",
@@ -67,6 +89,7 @@ describe("Testing The Great Henge API resources", () => {
       pid = product[0]._id;
       expect(Array.isArray(product)).to.be.equals(true);
     });
+
     it("Testing get a single product", async () => {
       let response = await requester
         .get("/products/" + pid)
@@ -74,6 +97,7 @@ describe("Testing The Great Henge API resources", () => {
       let { _body } = response;
       expect(_body.product).to.have.property("_id");
     });
+
     it("Testing product update", async () => {
       let data = { title: "updated" };
       let response = await requester
@@ -83,6 +107,7 @@ describe("Testing The Great Henge API resources", () => {
       let { _body } = response;
       expect(_body.product.title).to.be.equals("updated");
     });
+
     it("Testing get all carts", async () => {
       let response = await requester
         .get("/carts")
@@ -91,6 +116,7 @@ describe("Testing The Great Henge API resources", () => {
       const carts = _body.cart;
       expect(Array.isArray(carts)).to.be.equals(true);
     });
+
     it("Testing get a single cart", async () => {
       let response = await requester
         .get("/carts/" + cid)
@@ -98,6 +124,7 @@ describe("Testing The Great Henge API resources", () => {
       let { _body } = response;
       expect(_body.cart).to.have.property("_id");
     });
+
     it("Testing cart update", async () => {
       let data = {
         title: "Test title",
@@ -116,6 +143,7 @@ describe("Testing The Great Henge API resources", () => {
       let { statusCode } = response;
       expect(statusCode).to.be.equals(200);
     });
+
     it("Testing deleting test product", async () => {
       let response = await requester
         .delete("/products/" + pid)
@@ -123,6 +151,7 @@ describe("Testing The Great Henge API resources", () => {
       let { statusCode } = response;
       expect(statusCode).to.be.equals(200);
     });
+
     it("Testing deleting test cart", async () => {
       let response = await requester
         .delete("/carts/" + cid)
@@ -130,6 +159,7 @@ describe("Testing The Great Henge API resources", () => {
       let { statusCode } = response;
       expect(statusCode).to.be.equals(200);
     });
+
     it("Testing deleting test user", async () => {
       let response = await requester.delete("/users/" + uid);
       let { statusCode } = response;

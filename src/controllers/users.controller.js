@@ -41,17 +41,17 @@ export const POSTRecoverPassword = async (req, res, next) => {
     const user = await UserServices.recoverPassword(email);
     if (!user) return CustomErrors.create(ERROR_DICTIONARY.default);
     if (user.code !== 200) {
-      res.render("notFound");
+      res.send("notFound");
     } else {
-      const mail = await transport.sendMail({
+      /* const mail = await transport.sendMail({
         from: "The Great Henge <josh.dietrich87@ethereal.email>",
         to: email,
         subject: "Cambio de contraseña",
         text: "Cambio de contraseña",
         html: `<a href=${user.link}>Restaura tu contraseña acá</a>`,
       });
-      if (!mail) return CustomErrors.create(ERROR_DICTIONARY.default);
-      res.render("found");
+      if (!mail) return CustomErrors.create(ERROR_DICTIONARY.default); */
+      res.send(user);
     }
   } catch (error) {
     error.from = error.from || "CONTROLLER";

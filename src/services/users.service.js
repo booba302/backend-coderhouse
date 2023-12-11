@@ -85,6 +85,8 @@ export const recoverPassword = async (email) => {
       code: 200,
       error: false,
       msg: "Enlace de recuperación creado",
+      id: user.id,
+      token: resetToken,
       link: link,
     };
   } catch (error) {
