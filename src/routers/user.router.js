@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as UserController from "../controllers/users.controller.js";
-import { notLogged, logged } from "../utils/secure.middleware.js";
+import { notLogged } from "../utils/secure.middleware.js";
 
 const userRouter = Router();
 

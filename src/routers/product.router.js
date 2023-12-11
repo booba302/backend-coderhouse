@@ -6,7 +6,7 @@ const productRouter = Router();
 
 productRouter
   .get("/", isUser, ProductController.GETProducts)
-  .get("/:id", ProductController.GETProductsById)
+  .get("/:id", isUser, ProductController.GETProductsById)
   .post("/", isUser, ProductController.POSTProduct)
   .put("/:id", isUser, ProductController.PUTProduct)
   .delete("/:id", isUser, ProductController.DELETEProduct);
