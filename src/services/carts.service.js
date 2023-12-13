@@ -107,6 +107,7 @@ export const addProductToCart = async (idCart, idProd) => {
 };
 
 export const updateCart = async (id, product) => {
+  console.log(product);
   try {
     let findCart = await cartDAO.findById(id);
     if (!findCart) {

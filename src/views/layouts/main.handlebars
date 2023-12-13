@@ -42,7 +42,7 @@
               <li class="nav-item">
                 <a class="nav-link active" href="/login">Inicia Sesión</a>
               </li>
-            {{/if}}            
+            {{/if}}
             {{#if roles.user}}
               <li class="nav-item">
                 <a
@@ -72,7 +72,7 @@
             {{/if}}
             {{#unless roles.notLogged}}
               <li class="nav-item">
-                <a class="nav-link active" href="/logout">Cerrar sesión</a>
+                <a class="nav-link active" href="/api/auth/logout">Cerrar sesión</a>
               </li>
             {{/unless}}
           </ul>

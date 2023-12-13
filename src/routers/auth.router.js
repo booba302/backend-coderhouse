@@ -1,5 +1,6 @@
 import passport from "passport";
 import { Router } from "express";
+import { notLogged } from "../utils/secure.middleware.js";
 
 const authRouter = Router();
 
@@ -34,6 +35,13 @@ authRouter
       const user = req.user;
       res.send(user);
     }
-  );
+  )
+  .get("/logout", notLogged, async (req, res) => {
+    req.session.destroy((er) => {
+      res.status(200).send({
+        msg: "logout succesful",
+      });
+    });
+  });
 
 export default authRouter;

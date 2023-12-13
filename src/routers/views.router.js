@@ -7,7 +7,6 @@ const viewRouter = Router();
 viewRouter
   .get("/", ViewController.GETIndex)
   .get("/login", logged, ViewController.GETLogin)
-  .get("/logout", notLogged, ViewController.GETLogout)
   .get("/register", logged, ViewController.GETRegister)
   .get("/recoverpassword", logged, ViewController.GETPasswordRecovery)
   .get("/resetpassword", logged, ViewController.GETResetPassword)

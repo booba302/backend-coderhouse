@@ -24,13 +24,6 @@ export const GETRegister = async (req, res) => {
   res.render("register", { roles });
 };
 
-export const GETLogout = (req, res, next) => {
-  const roles = { notLogged: true };
-  req.session.destroy((er) => {
-    res.render("logout", { roles });
-  });
-};
-
 export const GETProductsView = async (req, res) => {
   const products = await ProductService.getProducts();
   let roles = {};
