@@ -42,8 +42,9 @@ export const GETProductsById = async (req, res, next) => {
 
 export const POSTProduct = async (req, res, next) => {
   const body = req.body;
+  const id = req.user._id;
   try {
-    const product = await ProductService.addProduct(body);
+    const product = await ProductService.addProduct(body, id);
     if (!product) return CustomErrors.create(ERROR_DICTIONARY.default);
     res.status(product.code).send(product);
   } catch (error) {

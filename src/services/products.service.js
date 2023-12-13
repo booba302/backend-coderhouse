@@ -72,9 +72,9 @@ export const getProductById = async (id) => {
   }
 };
 
-export const addProduct = async (product) => {
+export const addProduct = async (product, id) => {
   try {
-    product.owner = req.user.email;
+    product.owner = id
     const newProduct = await productDAO.create(product);
     return {
       code: 201,
