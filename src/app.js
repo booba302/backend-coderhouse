@@ -22,6 +22,7 @@ import __dirname from "./config/dirname.js";
 import InitPassport from "./config/passport.config.js";
 import config from "./config/config.js";
 import options from "./config/swagger.js";
+import { logger } from "./config/logger.js";
 
 import { socketConnection } from "./controllers/socket.controller.js";
 import ErrorHandlerMiddleware from "./utils/error.middleware.js";
@@ -66,6 +67,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(express.static(`${__dirname}/../public`));
+
+logger(app);
 
 app.use("/api/docs", serve, setup(specs));
 
