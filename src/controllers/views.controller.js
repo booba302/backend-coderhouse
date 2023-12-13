@@ -32,6 +32,7 @@ export const GETProductsView = async (req, res) => {
     roles = { [role]: true };
     if (role === "premium") {
       products.products.map((prod) => {
+        console.log(prod.owner);
         if (prod.owner.email === req.user.email) {
           prod.owned = true;
         }

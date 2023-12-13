@@ -74,6 +74,7 @@ export const getProductById = async (id) => {
 
 export const addProduct = async (product) => {
   try {
+    product.owner = req.user.email;
     const newProduct = await productDAO.create(product);
     return {
       code: 201,
